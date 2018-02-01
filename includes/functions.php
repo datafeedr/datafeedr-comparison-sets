@@ -211,7 +211,8 @@ function dfrcs_title() {
 
 	$msg = '';
 	if ( ! $compset->meets_min_num_product_requirement() && dfrcs_can_manage_compset() ) {
-		$admin_tip = __( 'This product is hidden to non-admins because it does not meet the "Minimum Number of Results" setting.', DFRCS_DOMAIN );
+		$admin_tip = __( 'This product is hidden to non-admins because it does not meet the "Minimum Number of Results" setting.',
+			DFRCS_DOMAIN );
 		$msg       = '<span title="' . esc_attr( $admin_tip ) . '"> ' . __( '[HIDDEN]', DFRCS_DOMAIN ) . '</span>';
 	}
 
@@ -289,7 +290,8 @@ function dfrcs_price( $product = array() ) {
 	$append_sign   = ( 'append' == $sign_position ) ? $sign : '';
 
 	if ( '0' == $p['finalprice'] ) {
-		$html .= '<span class="amount">' . apply_filters( 'dfrcs_price_zero', __( 'Click', DFRCS_DOMAIN ), $p ) . '</span>';
+		$html .= '<span class="amount">' . apply_filters( 'dfrcs_price_zero', __( 'Click', DFRCS_DOMAIN ),
+				$p ) . '</span>';
 	} elseif ( isset( $p['saleprice'] ) ) {
 		$html .= '<del><span class="amount">' . $prepend_sign . dfrapi_int_to_price( $p['price'] ) . $append_sign . '</span></del> ';
 		$html .= '<ins><span class="amount">' . $prepend_sign . dfrapi_int_to_price( $p['finalprice'] ) . $append_sign . '</span></ins>';
@@ -427,24 +429,33 @@ function dfrcs_product_actions( $product = array() ) {
 
 	$status = json_encode( $status );
 
-	$remove_link   = ' <a href="#" class="dfrcs_remove_product" data-dfrcs-pid="' . $p['_id'] . '" data-dfrcs-status=\'' . $status . '\'>' . __( 'Remove Product', DFRCS_DOMAIN ) . '</a>';
-	$restore_link  = ' <a href="#" class="dfrcs_restore_product" data-dfrcs-pid="' . $p['_id'] . '" data-dfrcs-status=\'' . $status . '\'>' . __( 'Restore Product', DFRCS_DOMAIN ) . '</a>';
-	$settings_link = ' <a href="' . add_query_arg( array( 'page' => 'dfrcs_options' ), admin_url( 'admin.php' ) ) . '" target="_blank">' . __( 'Change Settings', DFRCS_DOMAIN ) . '</a>';
+	$remove_link   = ' <a href="#" class="dfrcs_remove_product" data-dfrcs-pid="' . $p['_id'] . '" data-dfrcs-status=\'' . $status . '\'>' . __( 'Remove Product',
+			DFRCS_DOMAIN ) . '</a>';
+	$restore_link  = ' <a href="#" class="dfrcs_restore_product" data-dfrcs-pid="' . $p['_id'] . '" data-dfrcs-status=\'' . $status . '\'>' . __( 'Restore Product',
+			DFRCS_DOMAIN ) . '</a>';
+	$settings_link = ' <a href="' . add_query_arg( array( 'page' => 'dfrcs_options' ),
+			admin_url( 'admin.php' ) ) . '" target="_blank">' . __( 'Change Settings', DFRCS_DOMAIN ) . '</a>';
 
 	$html .= '<div class="dfrcs_product_actions">';
 
 	if ( ! $display ) {
 
-		$html .= ( $added ) ? __( 'This product was manually added to this comparison set.', DFRCS_DOMAIN ) . $remove_link : '';
-		$html .= ( $removed && ! $excluded ) ? __( 'This product was manually removed from this comparison set.', DFRCS_DOMAIN ) . $restore_link : '';
-		$html .= ( $excluded ) ? __( 'This product was automatically removed from this comparison set either by the "Include Master in Results" or "Exclude Duplicates Fields" setting.', DFRCS_DOMAIN ) . $settings_link . ' or ' . $restore_link : '';
+		$html .= ( $added ) ? __( 'This product was manually added to this comparison set.',
+				DFRCS_DOMAIN ) . $remove_link : '';
+		$html .= ( $removed && ! $excluded ) ? __( 'This product was manually removed from this comparison set.',
+				DFRCS_DOMAIN ) . $restore_link : '';
+		$html .= ( $excluded ) ? __( 'This product was automatically removed from this comparison set either by the "Include Master in Results" or "Exclude Duplicates Fields" setting.',
+				DFRCS_DOMAIN ) . $settings_link . ' or ' . $restore_link : '';
 		//$html .= '<a href="#" class="dfrcs_unremove_product" data-dfrcs-pid="' . $p['_id'] . '">' . __( 'Restore Product', DFRCS_DOMAIN ) . '</a>';
 
 	} else {
 
-		$html .= ( $added && $excluded ) ? __( 'This product was originally automatically excluded from this comparison set but then manually added.', DFRCS_DOMAIN ) . $remove_link : '';
-		$html .= ( ! $added ) ? __( 'This product was automatically added to this comparison set.', DFRCS_DOMAIN ) . $remove_link : '';
-		$html .= ( $added && ! $excluded ) ? __( 'This product was manually added to this comparison set.', DFRCS_DOMAIN ) . $remove_link : '';
+		$html .= ( $added && $excluded ) ? __( 'This product was originally automatically excluded from this comparison set but then manually added.',
+				DFRCS_DOMAIN ) . $remove_link : '';
+		$html .= ( ! $added ) ? __( 'This product was automatically added to this comparison set.',
+				DFRCS_DOMAIN ) . $remove_link : '';
+		$html .= ( $added && ! $excluded ) ? __( 'This product was manually added to this comparison set.',
+				DFRCS_DOMAIN ) . $remove_link : '';
 		//$html .= '<a href="#" class="dfrcs_remove_product" data-dfrcs-pid="' . $p['_id'] . '">' . __( 'Remove Product', DFRCS_DOMAIN ) . '</a>';
 	}
 
@@ -481,21 +492,21 @@ function dfrcs_product_debug( $product = array() ) {
 		if ( isset( $p[ $field ] ) ) {
 
 			if ( 'url' == $field ) {
-				$url = dfrcs_url( $p );
+				$url  = dfrcs_url( $p );
 				$html .= "<strong>$field</strong> - <a style='display:inline;' target='_blank' href='$url'>$url</a>\n";
 
 			} elseif ( 'image' == $field ) {
-				$img = $p[ $field ];
+				$img  = $p[ $field ];
 				$html .= "<strong>$field</strong> - <a style='display:inline;' target='_blank' href='$img'>$img</a>\n";
 
 			} elseif ( 'price' == $field || 'saleprice' == $field || 'finalprice' == $field ) {
 				$currency = dfrcs_currency( $p );
 				$price    = dfrapi_int_to_price( $p[ $field ] );
 				$val      = $currency . $price;
-				$html .= "<strong>$field</strong> - $val\n";
+				$html     .= "<strong>$field</strong> - $val\n";
 
 			} else {
-				$val = $p[ $field ];
+				$val  = $p[ $field ];
 				$html .= "<strong>$field</strong> - $val\n";
 			}
 		}
@@ -1088,3 +1099,65 @@ function dfrcs_visitor_is_bot() {
 	return false;
 }
 
+/**
+ * Wrapper for dfrcs_get_compset_product_field().
+ *
+ * @since 0.9.17
+ *
+ * @param Dfrcs $compset
+ * @param string $field Example: finalprice, url, price, merchant, merchant_id, etc...
+ *
+ * @return mixed|int|string False if invalid or int or string value if found.
+ */
+function dfrcs_get_lowest_priced_product_field( Dfrcs $compset, $field ) {
+	return dfrcs_get_compset_product_field( $compset, $field, 'lowest_priced_product' );
+}
+
+/**
+ * Wrapper for dfrcs_get_compset_product_field().
+ *
+ * @since 0.9.17
+ *
+ * @param Dfrcs $compset
+ * @param string $field Example: finalprice, url, price, merchant, merchant_id, etc...
+ *
+ * @return mixed|int|string False if invalid or int or string value if found.
+ */
+function dfrcs_get_highest_priced_product_field( Dfrcs $compset, $field ) {
+	return dfrcs_get_compset_product_field( $compset, $field, 'highest_priced_product' );
+}
+
+/**
+ * Returns a specific field from either the highest priced product or lowest
+ * priced product in a Comparison Set.
+ *
+ * If neither of those products exist in the Comparison Set or the Comparison Set is
+ * not cached, then this function returns false.
+ *
+ * @since 0.9.17
+ *
+ * @param Dfrcs $compset
+ * @param string $field Example: finalprice, url, price, merchant, merchant_id, etc...
+ * @param string $select Either "lowest_priced_product" or "highest_priced_product".
+ *
+ * @return mixed|int|string False if invalid or int or string value if found.
+ */
+function dfrcs_get_compset_product_field( Dfrcs $compset, $field, $select ) {
+
+	// We do not have a cached Comparison Set. Return false.
+	if ( ! $compset->cached ) {
+		return false;
+	}
+
+	// The lowest priced product (or highest priced product) does not exist in this Comparison Set. Return false.
+	if ( empty( $product = $compset->{$select} ) ) {
+		return false;
+	}
+
+	// The $field does not exist for this product. Return false.
+	if ( ! isset( $product[ $field ] ) ) {
+		return false;
+	}
+
+	return $product[ $field ];
+}
