@@ -8,7 +8,7 @@ Author URI: http://www.datafeedr.com
 License: GPL v3
 Requires at least: 3.8
 Tested up to: 4.9.3
-Version: 0.9.17
+Version: 0.9.18
 
 Datafeedr Comparison Sets Plugin
 Copyright (C) 2018, Datafeedr - help@datafeedr.com
@@ -37,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define constants.
  */
-define( 'DFRCS_VERSION', '0.9.17' );
+define( 'DFRCS_VERSION', '0.9.18' );
 define( 'DFRCS_DB_VERSION', '0.9.0' );
 define( 'DFRCS_URL', plugin_dir_url( __FILE__ ) );
 define( 'DFRCS_PATH', plugin_dir_path( __FILE__ ) );

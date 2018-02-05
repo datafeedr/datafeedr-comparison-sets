@@ -1150,9 +1150,11 @@ function dfrcs_get_compset_product_field( Dfrcs $compset, $field, $select ) {
 	}
 
 	// The lowest priced product (or highest priced product) does not exist in this Comparison Set. Return false.
-	if ( empty( $product = $compset->{$select} ) ) {
+	if ( ! isset( $compset->{$select} ) || empty( $compset->{$select} ) ) {
 		return false;
 	}
+
+	$product = $compset->{$select};
 
 	// The $field does not exist for this product. Return false.
 	if ( ! isset( $product[ $field ] ) ) {
