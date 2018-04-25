@@ -1,13 +1,13 @@
 === Datafeedr Comparison Sets ===
 
 Contributors: datafeedr.com
-Donate link: http://www.datafeedr.com/
+Donate link: https://www.datafeedr.com/
 Tags: comparison, comparison sets, compsets, price, price comparison, price compare, price comparison set, datafeedr, affiliate products, dfrapi
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.8
-Tested up to: 4.9.4
-Stable tag: 0.9.19
+Tested up to: 4.9.5
+Stable tag: 0.9.20
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
@@ -144,6 +144,16 @@ Create a price comparison set using multiple filters:
 [dfrcs name="nomad 20 solar panel" filters="currency=USD&finalprice_max=400"]
 `
 
+Create a price comparison set using an EAN code:
+`
+[dfrcs ean="737416080066"]
+`
+
+Create a price comparison set using an UPC code:
+`
+[dfrcs upc="050946872827"]
+`
+
 == Frequently Asked Questions ==
 
 = Where can I get help?  =
@@ -157,6 +167,9 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 3. This is the configuration page of the Datafeedr Comparison Sets plugin.
 
 == Changelog ==
+
+= 0.9.20 - 2018/04/25 =
+* Updated readme.txt.
 
 = 0.9.19 - 2018/03/14 =
 * Declared required and supported WooCommerce version.
