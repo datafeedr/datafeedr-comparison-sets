@@ -800,7 +800,7 @@ class Dfrcs {
 
 		// Check if Amazon API keys exist and return if they do not.
 		if ( ! function_exists( 'dfrapi_get_amazon_keys' ) || ! $amazon = dfrapi_get_amazon_keys() ) {
-			$this->log( 'query_amazon_by_' . $field . '/result', __( 'Halted. No Amazon Keys available.', DFRCS_DOMAIN ) );
+			$this->log( 'query_amazon/result', __( 'Halted. No Amazon Keys available.', DFRCS_DOMAIN ) );
 
 			return;
 		}
