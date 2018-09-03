@@ -25,6 +25,7 @@ class Dfrcs {
 	public $data = array();
 	public $removed = array();
 	public $added = array();
+	public $errors = array();
 
 	// Private Properties
 	private $display_method = 'data';
@@ -124,11 +125,18 @@ class Dfrcs {
 			}
 		}
 
-		$this->query_amazon();
-		$this->query_by_barcodes();
-		$this->query_by_model();
-		$this->query_by_name();
-		$this->add_custom_products();
+		try {
+			$this->query_amazon();
+			$this->query_by_barcodes();
+			$this->query_by_model();
+			$this->query_by_name();
+			$this->add_custom_products();
+		} catch ( DatafeedrError $exception ) {
+			$this->log( 'ERROR', __( 'DatafeedrError Exception: ' . print_r( $exception, true ), DFRCS_DOMAIN ) );
+			$this->errors[] = $exception;
+
+			return;
+		}
 
 		$this->products = $this->filter_products();
 
@@ -181,6 +189,19 @@ class Dfrcs {
 			} else {
 				$this->log( 'compset/IMPORTANT', $msg );
 			}
+		}
+
+		if ( ! empty( $this->errors ) ) {
+			if ( dfrcs_can_manage_compset() ) {
+				$html = '<div><strong>This compset is not displaying because the following DatafeedrError exception was thrown: </strong>';
+				$html .= '<pre>' . print_r( $this->errors, true ) . '</pre></div>';
+			} else {
+				$html = ( ! empty( $no_results_message = dfrcs_no_results_message() ) ) ?
+					'<div class="dfrcs_no_results_message">' . esc_html( $no_results_message ) . '</div>' :
+					'';
+			}
+
+			return $html;
 		}
 
 		if ( ! in_array( $this->display_method, array( 'data', 'ajax', 'php' ) ) ) {
@@ -364,7 +385,7 @@ class Dfrcs {
 			} else {
 				$filtered_products[ 'id_' . $product['_id'] ]['_display'] = 1;
 			}
-			
+
 			if ( ! isset( $product['merchant_id'] ) || empty( $product['merchant_id'] ) ) {
 				$filtered_products[ 'id_' . $product['_id'] ]['_display'] = 0;
 			}
@@ -470,7 +491,7 @@ class Dfrcs {
 
 		$classes = $method . ' ' . $this->css_class;
 		$html    = '<div class="dfrcs">';
-		$html .= "<div class='dfrcs_inner $classes' data-dfrcs='$this->encoded_source' id='$this->css_id'>";
+		$html    .= "<div class='dfrcs_inner $classes' data-dfrcs='$this->encoded_source' id='$this->css_id'>";
 
 		return $html;
 	}
