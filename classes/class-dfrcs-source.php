@@ -117,9 +117,9 @@ class Dfrcs_Source {
 		$barcodes = array_filter( array_unique( $barcodes ) );
 
 		foreach ( $barcodes as $code ) {
+			$code = ltrim( $code, '0' );
 			if ( strlen( $code ) > 9 ) {
-				$code = ltrim( $code, '0' );
-				$max  = ( 14 - strlen( $code ) );
+				$max = ( 14 - strlen( $code ) );
 				for ( $i = 0; $i <= $max; $i ++ ) { // Prepend with leading zeros.
 					$this->barcodes[] = str_repeat( '0', $i ) . $code;
 				}
