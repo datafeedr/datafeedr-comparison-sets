@@ -168,6 +168,9 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 
 == Changelog ==
 
+= 0.9.27 - 2019/04/23 =
+* Updated readme
+
 = 0.9.26 - 2019/03/04 =
 * Fixed handling of barcode values of 000000000000 or similar.
 
