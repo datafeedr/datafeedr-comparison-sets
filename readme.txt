@@ -6,8 +6,8 @@ Tags: comparison, comparison sets, compsets, price, price comparison, price comp
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.8
-Tested up to: 5.1
-Stable tag: 0.9.26
+Tested up to: 5.1.1
+Stable tag: 0.9.27
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
