@@ -6,8 +6,8 @@ Tags: comparison, comparison sets, compsets, price, price comparison, price comp
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.8
-Tested up to: 5.1.1
-Stable tag: 0.9.27
+Tested up to: 5.2
+Stable tag: 0.9.28
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
@@ -168,8 +168,11 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 
 == Changelog ==
 
+= 0.9.28 - 2019/05/06 =
+* Updated readme.
+
 = 0.9.27 - 2019/04/23 =
-* Updated readme
+* Updated readme.
 
 = 0.9.26 - 2019/03/04 =
 * Fixed handling of barcode values of 000000000000 or similar.
