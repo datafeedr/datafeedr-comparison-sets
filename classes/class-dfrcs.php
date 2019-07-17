@@ -287,7 +287,7 @@ class Dfrcs {
 		}
 
 		$html .= '<div class="dfrcs_compset_debug"><pre>';
-		$html .= print_r( $this->log, true );
+		$html .= esc_html( print_r( $this->log, true ) );
 		$html .= '</pre></div>';
 
 		return $html;

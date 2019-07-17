@@ -503,11 +503,11 @@ function dfrcs_product_debug( $product = array() ) {
 				$currency = dfrcs_currency( $p );
 				$price    = dfrapi_int_to_price( $p[ $field ] );
 				$val      = $currency . $price;
-				$html     .= "<strong>$field</strong> - $val\n";
+				$html     .= "<strong>$field</strong> - " . esc_html($val) . "\n";
 
 			} else {
 				$val  = $p[ $field ];
-				$html .= "<strong>$field</strong> - $val\n";
+				$html .= "<strong>$field</strong> - " . esc_html($val) . "\n";
 			}
 		}
 	}
@@ -548,7 +548,7 @@ function dfrcs_products_debug( $products ) {
 					$val                   = $currency . $price;
 					$array[ $i ][ $field ] = $val;
 				} else {
-					$array[ $i ][ $field ] = $p[ $field ];
+					$array[ $i ][ $field ] = esc_html($p[ $field ]);
 				}
 			}
 		}
