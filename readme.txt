@@ -7,7 +7,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.8
 Tested up to: 5.2.2
-Stable tag: 0.9.29
+Stable tag: 0.9.30
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
@@ -167,6 +167,9 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 3. This is the configuration page of the Datafeedr Comparison Sets plugin.
 
 == Changelog ==
+
+= 0.9.30 - 2019/08/20 =
+* Updated to support latest version of WooCommerce
 
 = 0.9.29 - 2019/07/17 =
 * Escaped values in debug output.
