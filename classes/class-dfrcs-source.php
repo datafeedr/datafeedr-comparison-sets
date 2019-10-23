@@ -66,7 +66,7 @@ class Dfrcs_Source {
 
 	private function set_name( $source ) {
 		if ( empty ( $this->name ) ) {
-			$this->name = ( isset( $source['name'] ) ) ? trim( $source['name'] ) : '';
+			$this->name = ( isset( $source['name'] ) ) ? trim( remove_accents( $source['name'] ) ) : '';
 		}
 	}
 
