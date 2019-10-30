@@ -93,9 +93,9 @@ class Dfrcs {
 	 * If there is a cached version and it's not expired, this will not create a compset.
 	 * Also, if the display method is 'data', this will not create a compset.
 	 *
+	 * @return null This method does not return anything.
 	 * @since 0.9.0
 	 *
-	 * @return null This method does not return anything.
 	 */
 	public function create() {
 
@@ -119,7 +119,8 @@ class Dfrcs {
 			if ( $source ) {
 				$this->source->build( $source );
 			} else {
-				$this->log( 'ERROR', __( 'No source data. Only an ID which does not correspond to any product.', DFRCS_DOMAIN ) );
+				$this->log( 'ERROR',
+					__( 'No source data. Only an ID which does not correspond to any product.', DFRCS_DOMAIN ) );
 
 				return;
 			}
@@ -175,9 +176,9 @@ class Dfrcs {
 	 * This also returns an empty string if the display method is not of an expected type.
 	 * This also returns the value of display_data() if the display_method is 'data'.
 	 *
+	 * @return string $html Returns $html for display.
 	 * @since 0.9.0
 	 *
-	 * @return string $html Returns $html for display.
 	 */
 	public function display() {
 
@@ -267,10 +268,14 @@ class Dfrcs {
 
 		$html .= '<div class="dfrcs_compset_actions">';
 		$html .= '<strong>' . __( 'Compset Admin', DFRCS_DOMAIN ) . '</strong>';
-		$html .= '<a href="#" class="action refresh" title="' . __( 'Refresh this comparison set', DFRCS_DOMAIN ) . '">' . __( 'Refresh Cache', DFRCS_DOMAIN ) . '</a>';
-		$html .= '<a href="#" class="action debug" title="' . __( 'View information about this comparison set.', DFRCS_DOMAIN ) . '">' . __( 'View Debug', DFRCS_DOMAIN ) . '</a>';
-		$html .= '<a href="' . $url . '" class="action dfrcs_add" target="_blank" name="compsetWindow" title="' . __( 'Add additional products to this comparison set.', DFRCS_DOMAIN ) . '">' . __( 'Add Products', DFRCS_DOMAIN ) . '</a>';
-		$html .= '<a href="#" class="action manage" title="' . __( 'Remove (or restore) products from this comparison set.', DFRCS_DOMAIN ) . '">' . __( 'Manage Products', DFRCS_DOMAIN ) . '</a>';
+		$html .= '<a href="#" class="action refresh" title="' . __( 'Refresh this comparison set',
+				DFRCS_DOMAIN ) . '">' . __( 'Refresh Cache', DFRCS_DOMAIN ) . '</a>';
+		$html .= '<a href="#" class="action debug" title="' . __( 'View information about this comparison set.',
+				DFRCS_DOMAIN ) . '">' . __( 'View Debug', DFRCS_DOMAIN ) . '</a>';
+		$html .= '<a href="' . $url . '" class="action dfrcs_add" target="_blank" name="compsetWindow" title="' . __( 'Add additional products to this comparison set.',
+				DFRCS_DOMAIN ) . '">' . __( 'Add Products', DFRCS_DOMAIN ) . '</a>';
+		$html .= '<a href="#" class="action manage" title="' . __( 'Remove (or restore) products from this comparison set.',
+				DFRCS_DOMAIN ) . '">' . __( 'Manage Products', DFRCS_DOMAIN ) . '</a>';
 		$html .= '</div>';
 
 		$html .= '<script type="text/javascript"> jQuery(function ($) { $(".dfrcs_add").popupWindow({ centerBrowser:1,height:600,width:640, }); }); </script>';
@@ -550,7 +555,8 @@ class Dfrcs {
 		$min_viewing_cap = dfrcs_get_option( 'min_viewing_cap' );
 
 		if ( ! current_user_can( $min_viewing_cap ) && ! empty( $min_viewing_cap ) ) {
-			return __( 'This compset is not displaying to non-admins because of the "min_viewing_cap" restriction.', DFRCS_DOMAIN );
+			return __( 'This compset is not displaying to non-admins because of the "min_viewing_cap" restriction.',
+				DFRCS_DOMAIN );
 		}
 
 		if ( dfrcs_visitor_is_bot() ) {
@@ -680,11 +686,11 @@ class Dfrcs {
 	 * If products are found, products are added to the $this->products property and then the
 	 * method returns true.
 	 *
-	 * @since 0.9.0
-	 *
-	 * @param string $id A unique Datafeedr product ID.
+	 * @param  string  $id  A unique Datafeedr product ID.
 	 *
 	 * @return boolean true if products are found, false if no query was run or no products were found.
+	 * @since 0.9.0
+	 *
 	 */
 	private function query_by_dfrps_product( $id ) {
 
@@ -731,11 +737,11 @@ class Dfrcs {
 	 * If products are found, products are added to the $this->products property and then the
 	 * method returns true.
 	 *
-	 * @since 0.9.0
-	 *
-	 * @param string $id A unique Datafeedr product ID.
+	 * @param  string  $id  A unique Datafeedr product ID.
 	 *
 	 * @return boolean true if products are found, false if no query was run or no products were found.
+	 * @since 0.9.0
+	 *
 	 */
 	private function query_by_id( $id ) {
 
@@ -745,7 +751,8 @@ class Dfrcs {
 		}
 
 		if ( $this->too_many_api_requests() ) {
-			$this->log( 'query_by_id', __( 'Halted. Reached API request limit of ', DFRCS_DOMAIN ) . $this->too_many_api_requests() . '.' );
+			$this->log( 'query_by_id',
+				__( 'Halted. Reached API request limit of ', DFRCS_DOMAIN ) . $this->too_many_api_requests() . '.' );
 
 			return false;
 		}
@@ -803,11 +810,11 @@ class Dfrcs {
 	 * If products are found, only the first product is added to the $this->products property and then the
 	 * method returns true to prevent any other queries being run.
 	 *
-	 * @since 0.9.0
-	 *
-	 * @param array $fields An array of fields to query the Amazon API on. Default: 'barcodes' and 'name'.
+	 * @param  array  $fields  An array of fields to query the Amazon API on. Default: 'barcodes' and 'name'.
 	 *
 	 * @return boolean true if products are found, false if no query was run or no products were found.
+	 * @since 0.9.0
+	 *
 	 */
 	private function query_amazon() {
 
@@ -858,14 +865,16 @@ class Dfrcs {
 
 			// too many queries.
 			if ( $this->too_many_api_requests() ) {
-				$this->log( 'query_amazon_by_' . $field . '/result', __( 'Halted. Reached API request limit of ', DFRCS_DOMAIN ) . $this->too_many_api_requests() . '.' );
+				$this->log( 'query_amazon_by_' . $field . '/result', __( 'Halted. Reached API request limit of ',
+						DFRCS_DOMAIN ) . $this->too_many_api_requests() . '.' );
 
 				return;
 			}
 
 			$api    = dfrapi_api( dfrapi_get_transport_method() );
 			$locale = ( isset( $this->source->filters['amazon_locale'] ) ) ? $this->source->filters['amazon_locale'] : $amazon['amazon_locale'];
-			$search = $api->amazonSearchRequest( $amazon['amazon_access_key_id'], $amazon['amazon_secret_access_key'], $amazon['amazon_tracking_id'], $locale );
+			$search = $api->amazonSearchRequest( $amazon['amazon_access_key_id'], $amazon['amazon_secret_access_key'],
+				$amazon['amazon_tracking_id'], $locale );
 			$search->addParam( 'Keywords', $param );
 
 			$this->log( 'query_amazon_by_' . $field . '/api_request/locale', $locale );
@@ -874,13 +883,15 @@ class Dfrcs {
 			// Add MinimumPrice filter.
 			if ( isset( $this->source->filters['finalprice_min'] ) ) {
 				$search->addParam( 'MinimumPrice', $this->source->filters['finalprice_min'] );
-				$this->log( 'query_amazon_by_' . $field . '/api_request/finalprice_min', $this->source->filters['finalprice_min'] );
+				$this->log( 'query_amazon_by_' . $field . '/api_request/finalprice_min',
+					$this->source->filters['finalprice_min'] );
 			}
 
 			// Add MaximumPrice filter.
 			if ( isset( $this->source->filters['finalprice_max'] ) ) {
 				$search->addParam( 'MaximumPrice', $this->source->filters['finalprice_max'] );
-				$this->log( 'query_amazon_by_' . $field . '/api_request/finalprice_max', $this->source->filters['finalprice_max'] );
+				$this->log( 'query_amazon_by_' . $field . '/api_request/finalprice_max',
+					$this->source->filters['finalprice_max'] );
 			}
 
 			$response = $search->execute();
@@ -932,11 +943,11 @@ class Dfrcs {
 	 * If products are found, products are added to the $this->products property and then the
 	 * method returns true.
 	 *
-	 * @since 0.9.0
-	 *
-	 * @param array $barcodes An array of unique codes like EAN, UPC, ISBN or ASIN values.
+	 * @param  array  $barcodes  An array of unique codes like EAN, UPC, ISBN or ASIN values.
 	 *
 	 * @return boolean true if products are found, false if no query was run or no products were found.
+	 * @since 0.9.0
+	 *
 	 */
 	private function query_by_barcodes() {
 
@@ -949,7 +960,8 @@ class Dfrcs {
 		}
 
 		if ( $this->too_many_api_requests() ) {
-			$this->log( 'query_by_barcodes', __( 'Halted. Reached API request limit of ', DFRCS_DOMAIN ) . $this->too_many_api_requests() . '.' );
+			$this->log( 'query_by_barcodes',
+				__( 'Halted. Reached API request limit of ', DFRCS_DOMAIN ) . $this->too_many_api_requests() . '.' );
 
 			return;
 		}
@@ -1013,11 +1025,11 @@ class Dfrcs {
 	 * If products are found, products are added to the $this->products property and then the
 	 * method returns true.
 	 *
-	 * @since 0.9.0
-	 *
-	 * @param array $model An array of possible model numbers.
+	 * @param  array  $model  An array of possible model numbers.
 	 *
 	 * @return boolean true if products are found, false if no query was run or no products were found.
+	 * @since 0.9.0
+	 *
 	 */
 	private function query_by_model() {
 
@@ -1030,7 +1042,8 @@ class Dfrcs {
 		}
 
 		if ( $this->too_many_api_requests() ) {
-			$this->log( 'query_by_model', __( 'Halted. Reached API request limit of ', DFRCS_DOMAIN ) . $this->too_many_api_requests() . '.' );
+			$this->log( 'query_by_model',
+				__( 'Halted. Reached API request limit of ', DFRCS_DOMAIN ) . $this->too_many_api_requests() . '.' );
 
 			return;
 		}
@@ -1102,12 +1115,12 @@ class Dfrcs {
 	 * If products are found, products are added to the $this->products property and then the
 	 * method returns true.
 	 *
-	 * @since 0.9.0
-	 *
-	 * @param string $name The product's name.
-	 * @param string $brand Optional. The product's brand.
+	 * @param  string  $name  The product's name.
+	 * @param  string  $brand  Optional. The product's brand.
 	 *
 	 * @return boolean true if products are found, false if no query was run or no products were found.
+	 * @since 0.9.0
+	 *
 	 */
 	private function query_by_name() {
 
@@ -1120,7 +1133,8 @@ class Dfrcs {
 		}
 
 		if ( $this->too_many_api_requests() ) {
-			$this->log( 'query_by_name', __( 'Halted. Reached API request limit of ', DFRCS_DOMAIN ) . $this->too_many_api_requests() . '.' );
+			$this->log( 'query_by_name',
+				__( 'Halted. Reached API request limit of ', DFRCS_DOMAIN ) . $this->too_many_api_requests() . '.' );
 
 			return;
 		}
@@ -1150,7 +1164,6 @@ class Dfrcs {
 			$brand_name = apply_filters( 'dfrcs_post_parse_brand_name', $brand_name, $this );
 		}
 
-
 		// Allow user to perform custom parsing on product name before we do our own.
 		$product_name = apply_filters( 'dfrcs_pre_parse_product_name', $name, $this );
 
@@ -1158,13 +1171,17 @@ class Dfrcs {
 		$product_name = str_replace( array( "/", "(", ")" ), " ", $product_name );
 
 		// Remove all single letters from product name. @http://stackoverflow.com/a/5572799
-		$product_name = preg_replace( '/\b\D\b\s?/', ' ', $product_name );
+		$product_name = preg_replace( '/\b\D\b\s?/u', ' ', $product_name );
 
 		// Remove brand name from product name to get a higher density of product name keywords.
 		$product_name = ( ! empty( $brand_name ) ) ? str_ireplace( $brand_name, " ", $product_name ) : $product_name;
 
-		// Sanitize product name and explode on "-" delimiter. Remove duplicate values.
-		$product_name = array_unique( explode( "-", sanitize_title( $product_name ) ) );
+		// Strip out special characters.
+		$product_name = array_map( function ( $word ) {
+			return preg_replace( "/[^[:alnum:]]/u", '', trim( $word ) );
+		}, explode( ' ', trim( strip_tags( $product_name ) ) ) );
+
+		$product_name = array_unique( array_filter( $product_name ) );
 
 		// Now we get words that we MUST use in our API query. These words will be excluded from the quorum search.
 		$mandatory_keywords = array_intersect( $product_name, dfrcs_get_option( 'mandatory_keywords' ) );
@@ -1323,11 +1340,11 @@ class Dfrcs {
 	/**
 	 * Returns the 13 character EAN value from barcodes array.
 	 *
-	 * @since 0.9.0
-	 *
-	 * @param array $barcodes An array of unique codes such as EAN, UPC, ASIN and ISBN.
+	 * @param  array  $barcodes  An array of unique codes such as EAN, UPC, ASIN and ISBN.
 	 *
 	 * @return string The first 13 character long code from $barcodes.
+	 * @since 0.9.0
+	 *
 	 */
 	private function get_ean13( $barcodes ) {
 		if ( is_array( $barcodes ) && ! empty( $barcodes ) ) {
