@@ -170,12 +170,16 @@ function dfrcs_sort_products( $products, $orderby, $order ) {
 	}
 
 	$sort = array();
+
 	foreach ( $products as $k => $v ) {
 		$sort[ $orderby ][ $k ] = $v[ $orderby ];
 	}
 
 	$order = ( 'desc' == $order ) ? SORT_DESC : SORT_ASC;
-	array_multisort( $sort[ $orderby ], $order, SORT_NUMERIC, $products );
+
+	$sort_order_by = $sort[ $orderby ];
+
+	array_multisort( $sort_order_by, $order, SORT_NUMERIC, $products );
 
 	return $products;
 }
