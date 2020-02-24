@@ -8,13 +8,13 @@ Author URI: https://www.datafeedr.com
 License: GPL v3
 Requires at least: 3.8
 Tested up to: 5.3
-Version: 0.9.34
+Version: 0.9.35
 
 WC requires at least: 3.0
 WC tested up to: 3.8.1
 
 Datafeedr Comparison Sets Plugin
-Copyright (C) 2019, Datafeedr - help@datafeedr.com
+Copyright (C) 2020, Datafeedr - help@datafeedr.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define constants.
  */
-define( 'DFRCS_VERSION', '0.9.34' );
+define( 'DFRCS_VERSION', '0.9.35' );
 define( 'DFRCS_DB_VERSION', '0.9.0' );
 define( 'DFRCS_URL', plugin_dir_url( __FILE__ ) );
 define( 'DFRCS_PATH', plugin_dir_path( __FILE__ ) );

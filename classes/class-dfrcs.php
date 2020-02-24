@@ -686,7 +686,7 @@ class Dfrcs {
 	 * If products are found, products are added to the $this->products property and then the
 	 * method returns true.
 	 *
-	 * @param  string  $id  A unique Datafeedr product ID.
+	 * @param string $id A unique Datafeedr product ID.
 	 *
 	 * @return boolean true if products are found, false if no query was run or no products were found.
 	 * @since 0.9.0
@@ -737,7 +737,7 @@ class Dfrcs {
 	 * If products are found, products are added to the $this->products property and then the
 	 * method returns true.
 	 *
-	 * @param  string  $id  A unique Datafeedr product ID.
+	 * @param string $id A unique Datafeedr product ID.
 	 *
 	 * @return boolean true if products are found, false if no query was run or no products were found.
 	 * @since 0.9.0
@@ -810,7 +810,7 @@ class Dfrcs {
 	 * If products are found, only the first product is added to the $this->products property and then the
 	 * method returns true to prevent any other queries being run.
 	 *
-	 * @param  array  $fields  An array of fields to query the Amazon API on. Default: 'barcodes' and 'name'.
+	 * @param array $fields An array of fields to query the Amazon API on. Default: 'barcodes' and 'name'.
 	 *
 	 * @return boolean true if products are found, false if no query was run or no products were found.
 	 * @since 0.9.0
@@ -871,10 +871,27 @@ class Dfrcs {
 				return;
 			}
 
-			$api    = dfrapi_api( dfrapi_get_transport_method() );
+			// Add https = true to query options.
+			add_filter( 'dfrapi_api_options', function ( $options ) {
+				$options['https'] = true;
+
+				return $options;
+			} );
+
+			$api = dfrapi_api( dfrapi_get_transport_method() );
+
+			// Remove https = true to query options.
+			add_filter( 'dfrapi_api_options', function ( $options ) {
+				$options['https'] = false;
+
+				return $options;
+			} );
+
 			$locale = ( isset( $this->source->filters['amazon_locale'] ) ) ? $this->source->filters['amazon_locale'] : $amazon['amazon_locale'];
 			$search = $api->amazonSearchRequest( $amazon['amazon_access_key_id'], $amazon['amazon_secret_access_key'],
 				$amazon['amazon_tracking_id'], $locale );
+
+
 			$search->addParam( 'Keywords', $param );
 
 			$this->log( 'query_amazon_by_' . $field . '/api_request/locale', $locale );
@@ -894,7 +911,12 @@ class Dfrcs {
 					$this->source->filters['finalprice_max'] );
 			}
 
-			$response = $search->execute();
+			try {
+				$response = $search->execute();
+			} catch ( DatafeedrError $e ) {
+				$this->log( 'query_amazon_by_' . $field . '/api_response/error', print_r( $e, true ) );
+				break;
+			}
 
 			$this->num_requests ++;
 
@@ -943,7 +965,7 @@ class Dfrcs {
 	 * If products are found, products are added to the $this->products property and then the
 	 * method returns true.
 	 *
-	 * @param  array  $barcodes  An array of unique codes like EAN, UPC, ISBN or ASIN values.
+	 * @param array $barcodes An array of unique codes like EAN, UPC, ISBN or ASIN values.
 	 *
 	 * @return boolean true if products are found, false if no query was run or no products were found.
 	 * @since 0.9.0
@@ -1025,7 +1047,7 @@ class Dfrcs {
 	 * If products are found, products are added to the $this->products property and then the
 	 * method returns true.
 	 *
-	 * @param  array  $model  An array of possible model numbers.
+	 * @param array $model An array of possible model numbers.
 	 *
 	 * @return boolean true if products are found, false if no query was run or no products were found.
 	 * @since 0.9.0
@@ -1115,8 +1137,8 @@ class Dfrcs {
 	 * If products are found, products are added to the $this->products property and then the
 	 * method returns true.
 	 *
-	 * @param  string  $name  The product's name.
-	 * @param  string  $brand  Optional. The product's brand.
+	 * @param string $name The product's name.
+	 * @param string $brand Optional. The product's brand.
 	 *
 	 * @return boolean true if products are found, false if no query was run or no products were found.
 	 * @since 0.9.0
@@ -1340,7 +1362,7 @@ class Dfrcs {
 	/**
 	 * Returns the 13 character EAN value from barcodes array.
 	 *
-	 * @param  array  $barcodes  An array of unique codes such as EAN, UPC, ASIN and ISBN.
+	 * @param array $barcodes An array of unique codes such as EAN, UPC, ASIN and ISBN.
 	 *
 	 * @return string The first 13 character long code from $barcodes.
 	 * @since 0.9.0

@@ -7,7 +7,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.8
 Tested up to: 5.3
-Stable tag: 0.9.34
+Stable tag: 0.9.35
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
@@ -167,6 +167,9 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 3. This is the configuration page of the Datafeedr Comparison Sets plugin.
 
 == Changelog ==
+
+= 0.9.35 - 2020/02/24 =
+* Requiring all Amazon API requests to be made over an HTTPS connection.
 
 = 0.9.34 - 2019/12/15 =
 * Updated `dfrcs_sort_products()` to pass variable, not array, to `array_multisort()`.
