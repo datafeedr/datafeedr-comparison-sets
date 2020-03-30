@@ -7,7 +7,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.8
 Tested up to: 5.4
-Stable tag: 0.9.36
+Stable tag: 0.9.37
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
@@ -154,6 +154,11 @@ Create a price comparison set using an UPC code:
 [dfrcs upc="050946872827"]
 `
 
+Shortcode to use on WooCommerce **single product pages** (ie. in blocks, page builders, widgets, etc...)
+`
+[dfrcs_wc]
+`
+
 == Frequently Asked Questions ==
 
 = Where can I get help?  =
@@ -167,6 +172,9 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 3. This is the configuration page of the Datafeedr Comparison Sets plugin.
 
 == Changelog ==
+
+= 0.9.37 - 2020/03/30 =
+* Added new `[dfrcs_wc]` shortcode to use on WooCommerce single product pages.
 
 = 0.9.36 - 2020/03/11 =
 * Added support for WooCommerce 4.0.
