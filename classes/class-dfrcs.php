@@ -826,6 +826,12 @@ class Dfrcs {
 			return;
 		}
 
+		if ( apply_filters( 'dfrcs_skip_amazon_query', false, $this ) == true ) {
+			$this->log( 'query_amazon/result', __( 'Halted. dfrcs_skip_amazon_query returned true.', DFRCS_DOMAIN ) );
+
+			return;
+		}
+
 		// Check if Amazon API keys exist and return if they do not.
 		if ( ! function_exists( 'dfrapi_get_amazon_keys' ) || ! $amazon = dfrapi_get_amazon_keys() ) {
 			$this->log( 'query_amazon/result', __( 'Halted. No Amazon Keys available.', DFRCS_DOMAIN ) );
