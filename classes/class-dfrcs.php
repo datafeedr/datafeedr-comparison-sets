@@ -517,9 +517,11 @@ class Dfrcs {
 			return $html;
 		}
 
+		$last_updated_text = apply_filters( 'dfrcs_last_updated_text', 'Last updated:', $this );
+
 		$html .= '<div class="dfrcs_last_updated">';
 		if ( dfrcs_get_option( 'display_last_updated' ) ) {
-			$html .= __( 'Last updated', DFRCS_DOMAIN ) . ': ';
+			$html .= esc_html( $last_updated_text ) . ' ';
 			$html .= $this->date_updated;
 		}
 		$html .= '</div>';

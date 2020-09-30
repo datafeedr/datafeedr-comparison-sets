@@ -6,8 +6,8 @@ Tags: comparison, comparison sets, compsets, price, price comparison, price comp
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.8
-Tested up to: 5.5
-Stable tag: 0.9.39
+Tested up to: 5.6-alpha
+Stable tag: 0.9.40
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
@@ -172,6 +172,10 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 3. This is the configuration page of the Datafeedr Comparison Sets plugin.
 
 == Changelog ==
+
+= 0.9.40 - 2020/09/30 =
+* Added the ability to override "Last updated" text. `add_filter( 'dfrcs_last_updated_text', function($text, $compset){return 'UPDATED:';}, 10, 2 );`
+* Added `asin` as a default barcode field.
 
 = 0.9.39 - 2020/08/20 =
 * Added new filter to remove Amazon products from compsets returned via shortcodes.

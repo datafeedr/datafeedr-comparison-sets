@@ -64,7 +64,7 @@ function dfrcs_get_option( $key ) {
 function dfrcs_default_options( $key = false ) {
 
 	$options = array(
-		'barcode_fields'           => array( 'upc', 'ean', 'isbn' ),
+		'barcode_fields'           => array( 'upc', 'ean', 'isbn', 'asin' ),
 		'brand_name_stopwords'     => array( 'inc', 'co', 'the', 'intl', 'international' ),
 		'cache_lifetime'           => ( DAY_IN_SECONDS * 3 ),
 		'debug_fields'             => array(
