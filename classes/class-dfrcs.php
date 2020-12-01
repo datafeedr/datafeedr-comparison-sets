@@ -61,13 +61,15 @@ class Dfrcs {
 			return;
 		}
 
-		$this->cached           = dfrcs_select( $this->source->hash );
-		$this->cache_is_expired = ( $this->cache_is_expired( $this->cached['updated'] ) ) ? true : false;
+		$this->cached = dfrcs_select( $this->source->hash );
 
-		$this->removed      = unserialize( $this->cached['removed'] );
-		$this->added        = unserialize( $this->cached['added'] );
-		$this->date_updated = $this->cached['updated'];
-		$this->date_created = $this->cached['created'];
+		if ( $this->cached ) {
+			$this->cache_is_expired = $this->cache_is_expired( $this->cached['updated'] );
+			$this->removed          = unserialize( $this->cached['removed'] );
+			$this->added            = unserialize( $this->cached['added'] );
+			$this->date_updated     = $this->cached['updated'];
+			$this->date_created     = $this->cached['created'];
+		}
 
 		if ( $this->cached && ! $this->cache_is_expired ) {
 
