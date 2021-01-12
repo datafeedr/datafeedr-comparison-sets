@@ -100,6 +100,7 @@ function dfrcs_default_options( $key = false ) {
 		'query_by_model'           => '1',
 		'query_by_name'            => '1',
 		'title'                    => __( 'Compare {num_products} Prices', DFRCS_DOMAIN ),
+		'used_label'               => __( 'Used', DFRCS_DOMAIN ),
 	);
 
 	if ( $key ) {
@@ -153,15 +154,15 @@ function dfrcs_cached_compset( $source, $expired_ok = true ) {
  *
  * This sorts the entire array of products by the user defined order and orderby values.
  *
- * @since 0.9.0
- *
- * @link http://stackoverflow.com/a/3233009 (Get list of sort columns and their data to pass to array_multisort)
- *
  * @param array $products An array of products.
  * @param string $orderby Which field to perform the order on.
  * @param string $order Which direction to order products, asc or desc.
  *
  * @return array Sorted products array.
+ * @since 0.9.0
+ *
+ * @link http://stackoverflow.com/a/3233009 (Get list of sort columns and their data to pass to array_multisort)
+ *
  */
 function dfrcs_sort_products( $products, $orderby, $order ) {
 
@@ -288,19 +289,46 @@ function dfrcs_price( $product = array() ) {
 
 	$html = '';
 
-	$sign          = dfrcs_currency( $p );
-	$sign_position = dfrcs_currency_sign_position( $sign );
-	$prepend_sign  = ( 'prepend' == $sign_position ) ? $sign : '';
-	$append_sign   = ( 'append' == $sign_position ) ? $sign : '';
+	if ( function_exists( 'dfrapi_get_price' ) ) {
 
-	if ( '0' == $p['finalprice'] ) {
-		$html .= '<span class="amount">' . apply_filters( 'dfrcs_price_zero', __( 'Click', DFRCS_DOMAIN ),
-				$p ) . '</span>';
-	} elseif ( isset( $p['saleprice'] ) ) {
-		$html .= '<del><span class="amount">' . $prepend_sign . dfrapi_int_to_price( $p['price'] ) . $append_sign . '</span></del> ';
-		$html .= '<ins><span class="amount">' . $prepend_sign . dfrapi_int_to_price( $p['finalprice'] ) . $append_sign . '</span></ins>';
+		$context    = apply_filters( 'dfrcs_price_context', 'compset', $p );
+		$used_label = esc_html( dfrcs_get_option( 'used_label' ) );
+
+		if ( $p['merchant_id'] == '7777' && isset( $p['usedprice'] ) ) {
+			$html .= '<span class="usedprice">';
+			$html .= '<span class="usedprice_label">' . $used_label . '</span> ';
+			$html .= '<span class="amount">';
+			$html .= dfrapi_get_price( $p['usedprice'], $p['currency'], $context );
+			$html .= '</span>';
+			$html .= '</span>';
+		}
+
+		if ( '0' == $p['finalprice'] ) {
+			$html .= '<span class="amount">' . apply_filters( 'dfrcs_price_zero', __( 'Click', DFRCS_DOMAIN ),
+					$p ) . '</span>';
+		} elseif ( isset( $p['saleprice'] ) ) {
+			$html .= '<del><span class="amount">' . dfrapi_get_price( $p['price'], $p['currency'], $context ) . '</span></del> ';
+			$html .= '<ins><span class="amount">' . dfrapi_get_price( $p['finalprice'], $p['currency'], $context ) . '</span></ins> ';
+		} else {
+			$html .= '<span class="amount">' . dfrapi_get_price( $p['finalprice'], $p['currency'], $context ) . '</span>';
+		}
+
 	} else {
-		$html .= '<span class="amount">' . $prepend_sign . dfrapi_int_to_price( $p['finalprice'] ) . $append_sign . '</span>';
+
+		$sign          = dfrcs_currency( $p );
+		$sign_position = dfrcs_currency_sign_position( $sign );
+		$prepend_sign  = ( 'prepend' == $sign_position ) ? $sign : '';
+		$append_sign   = ( 'append' == $sign_position ) ? $sign : '';
+
+		if ( '0' == $p['finalprice'] ) {
+			$html .= '<span class="amount">' . apply_filters( 'dfrcs_price_zero', __( 'Click', DFRCS_DOMAIN ),
+					$p ) . '</span>';
+		} elseif ( isset( $p['saleprice'] ) ) {
+			$html .= '<del><span class="amount">' . $prepend_sign . dfrapi_int_to_price( $p['price'] ) . $append_sign . '</span></del> ';
+			$html .= '<ins><span class="amount">' . $prepend_sign . dfrapi_int_to_price( $p['finalprice'] ) . $append_sign . '</span></ins>';
+		} else {
+			$html .= '<span class="amount">' . $prepend_sign . dfrapi_int_to_price( $p['finalprice'] ) . $append_sign . '</span>';
+		}
 	}
 
 	return apply_filters( 'dfrcs_price', $html, $p );
@@ -309,11 +337,11 @@ function dfrcs_price( $product = array() ) {
 /**
  * Returns 'append' if sign should be appended to price. Otherwise returns 'prepend'.
  *
- * @since 0.9.1
- *
  * @param $sign Values of dfrapi_currency_code_to_sign()
  *
  * @return string 'append' or 'prepend'
+ * @since 0.9.1
+ *
  */
 function dfrcs_currency_sign_position( $sign ) {
 	$appended_signs = array( 'kr' );
@@ -507,11 +535,11 @@ function dfrcs_product_debug( $product = array() ) {
 				$currency = dfrcs_currency( $p );
 				$price    = dfrapi_int_to_price( $p[ $field ] );
 				$val      = $currency . $price;
-				$html     .= "<strong>$field</strong> - " . esc_html($val) . "\n";
+				$html     .= "<strong>$field</strong> - " . esc_html( $val ) . "\n";
 
 			} else {
 				$val  = $p[ $field ];
-				$html .= "<strong>$field</strong> - " . esc_html($val) . "\n";
+				$html .= "<strong>$field</strong> - " . esc_html( $val ) . "\n";
 			}
 		}
 	}
@@ -552,7 +580,7 @@ function dfrcs_products_debug( $products ) {
 					$val                   = $currency . $price;
 					$array[ $i ][ $field ] = $val;
 				} else {
-					$array[ $i ][ $field ] = esc_html($p[ $field ]);
+					$array[ $i ][ $field ] = esc_html( $p[ $field ] );
 				}
 			}
 		}
@@ -657,11 +685,11 @@ function dfrcs_explode_tree( $array, $delimiter = '/', $baseval = false ) {
 /**
  * Sort the $source array by it's keys.
  *
- * @since 0.9.0
- *
  * @param array $source The unsorted $src_product array.
  *
  * @return array A key-sorted $source array.
+ * @since 0.9.0
+ *
  */
 function dfrcs_sort_source( $source ) {
 	if ( ! empty( $source ) ) {
@@ -1106,12 +1134,12 @@ function dfrcs_visitor_is_bot() {
 /**
  * Wrapper for dfrcs_get_compset_product_field().
  *
- * @since 0.9.17
- *
  * @param Dfrcs $compset
  * @param string $field Example: finalprice, url, price, merchant, merchant_id, etc...
  *
  * @return mixed|int|string False if invalid or int or string value if found.
+ * @since 0.9.17
+ *
  */
 function dfrcs_get_lowest_priced_product_field( Dfrcs $compset, $field ) {
 	return dfrcs_get_compset_product_field( $compset, $field, 'lowest_priced_product' );
@@ -1120,12 +1148,12 @@ function dfrcs_get_lowest_priced_product_field( Dfrcs $compset, $field ) {
 /**
  * Wrapper for dfrcs_get_compset_product_field().
  *
- * @since 0.9.17
- *
  * @param Dfrcs $compset
  * @param string $field Example: finalprice, url, price, merchant, merchant_id, etc...
  *
  * @return mixed|int|string False if invalid or int or string value if found.
+ * @since 0.9.17
+ *
  */
 function dfrcs_get_highest_priced_product_field( Dfrcs $compset, $field ) {
 	return dfrcs_get_compset_product_field( $compset, $field, 'highest_priced_product' );
@@ -1138,13 +1166,13 @@ function dfrcs_get_highest_priced_product_field( Dfrcs $compset, $field ) {
  * If neither of those products exist in the Comparison Set or the Comparison Set is
  * not cached, then this function returns false.
  *
- * @since 0.9.17
- *
  * @param Dfrcs $compset
  * @param string $field Example: finalprice, url, price, merchant, merchant_id, etc...
  * @param string $select Either "lowest_priced_product" or "highest_priced_product".
  *
  * @return mixed|int|string False if invalid or int or string value if found.
+ * @since 0.9.17
+ *
  */
 function dfrcs_get_compset_product_field( Dfrcs $compset, $field, $select ) {
 
@@ -1181,9 +1209,9 @@ function dfrcs_get_compset_product_field( Dfrcs $compset, $field, $select ) {
  *
  * Description.
  *
+ * @return void
  * @since 0.9.0
  *
- * @return void
  */
 function dfrcs_wc_single_product_page_compset() {
 	$source = dfrcs_wc_get_source_of_product();
@@ -1248,9 +1276,9 @@ function dfrcs_wc_get_source_of_product( $product = false ) {
  *      17 = Above Related Products
  *      25 = Below Related Products
  *
+ * @return integer Returns the display priority..
  * @since 0.9.0
  *
- * @return integer Returns the display priority..
  */
 function dfrcs_wc_compset_priority() {
 	return apply_filters( 'dfrcs_wc_compset_priority', 0 );

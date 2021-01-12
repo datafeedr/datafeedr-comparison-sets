@@ -201,6 +201,21 @@
     text-decoration: none;
 }
 
+.dfrcs ul.dfrcs_compset li a .item div.dfrcs_price .usedprice {
+    display: block;
+    font-size: 80%;
+}
+
+.dfrcs ul.dfrcs_compset li a .item div.dfrcs_price .usedprice .amount {
+    white-space: nowrap;
+}
+
+.dfrcs ul.dfrcs_compset li a .item div.dfrcs_price .usedprice_label {
+    color: #666;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
 .dfrcs ul.dfrcs_compset li:hover div.dfrcs_price .amount {
     text-decoration: none;
 }

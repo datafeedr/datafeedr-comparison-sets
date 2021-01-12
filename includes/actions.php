@@ -82,6 +82,7 @@ function dfrcs_register_settings() {
 	add_settings_field( 'dfrcs_min_viewing_cap_setting', 'Minimum Viewing Role', 'dfrcs_min_viewing_cap', 'dfrcs_options', 'dfrcs_options_display' );
 	add_settings_field( 'dfrcs_debug_fields_setting', 'Debug Fields', 'dfrcs_debug_fields', 'dfrcs_options', 'dfrcs_options_display' );
 	add_settings_field( 'dfrcs_no_results_message_setting', 'No Results Message', 'dfrcs_no_results_message_setting', 'dfrcs_options', 'dfrcs_options_display' );
+	add_settings_field( 'dfrcs_used_label_setting', 'Used Label', 'dfrcs_used_label_setting', 'dfrcs_options', 'dfrcs_options_display' );
 
 	// Query Settings
 	add_settings_section( 'dfrcs_options_query', 'Query Settings', 'dfrcs_options_query_desc', 'dfrcs_options' );
@@ -339,6 +340,19 @@ function dfrcs_no_results_message_setting() {
 	echo '<input type="text" name="' . $name . '" value="' . esc_attr( $value ) . '" class="large-text">';
 	echo '<p class="description">';
 	echo __( 'The text to display if there are no results in the comparison set.', DFRCS_DOMAIN );
+	echo '<br />';
+	echo '<small>' . __( 'Default: ', DFRCS_DOMAIN ) . $default . '</small>';
+	echo '</p>';
+}
+
+function dfrcs_used_label_setting() {
+	$key     = 'used_label';
+	$name    = 'dfrcs_options[' . $key . ']';
+	$value   = dfrcs_get_option( $key );
+	$default = dfrcs_default_options( $key );
+	echo '<input type="text" name="' . $name . '" value="' . esc_attr( $value ) . '" class="large-text">';
+	echo '<p class="description">';
+	echo __( 'The label to display next to a "Used" prices. (Amazon products only)', DFRCS_DOMAIN );
 	echo '<br />';
 	echo '<small>' . __( 'Default: ', DFRCS_DOMAIN ) . $default . '</small>';
 	echo '</p>';
@@ -605,6 +619,12 @@ function dfrcs_options_validate( $input ) {
 		$newinput['loading_text'] = dfrcs_default_options( 'loading_text' );
 	}
 
+	// Used Label
+	$newinput['used_label'] = trim( $input['used_label'] );
+	if ( empty( $newinput['used_label'] ) ) {
+		$newinput['used_label'] = dfrcs_default_options( 'used_label' );
+	}
+
 	// Minimum Viewing Capability
 	$newinput['min_viewing_cap'] = trim( $input['min_viewing_cap'] );
 
@@ -728,28 +748,28 @@ function dfrcs_add_products_output() {
 
 	?>
 
-	<div id="dfrcs_search_form_wrapper" class="stuffbox">
+    <div id="dfrcs_search_form_wrapper" class="stuffbox">
 
-		<p><strong><?php _e( 'Search for products to add to this comparison set.', DFRCS_DOMAIN ); ?></strong></p>
+        <p><strong><?php _e( 'Search for products to add to this comparison set.', DFRCS_DOMAIN ); ?></strong></p>
 
-		<form>
+        <form>
 			<?php
 			$sform = new Dfrapi_SearchForm();
 			echo $sform->render( '_dfrcs_query', $last_query );
 			?>
-		</form>
+        </form>
 
-		<div class="actions">
+        <div class="actions">
 			<span class="dfrcs_raw_query">
 				<a href="#" id="dfrcs_view_raw_query"><?php _e( 'view api request', DFRCS_DOMAIN ); ?></a>
 			</span>
-			<input type="hidden" name="dfrcs_hash" id="dfrcs_hash" value="<?php echo $hash; ?>"/>
-			<input name="search" type="submit" class="button" id="dfrcs_search"
-			       value="<?php echo __( 'Search', DFRCS_DOMAIN ); ?>"/>
-		</div>
-		<div id="div_dfrcs_search_results"></div>
+            <input type="hidden" name="dfrcs_hash" id="dfrcs_hash" value="<?php echo $hash; ?>"/>
+            <input name="search" type="submit" class="button" id="dfrcs_search"
+                   value="<?php echo __( 'Search', DFRCS_DOMAIN ); ?>"/>
+        </div>
+        <div id="div_dfrcs_search_results"></div>
 
-	</div>
+    </div>
 	<?php
 }
 
@@ -759,30 +779,30 @@ function dfrcs_add_products_output() {
 add_action( 'admin_head', 'dfrcs_hide_admin_interface' );
 function dfrcs_hide_admin_interface() {
 	if ( isset( $_GET['page'] ) && ( 'dfrcs_add_products' == $_GET['page'] ) ) { ?>
-		<style type="text/css">
-			html,
-			html.wp-toolbar,
-			#wpbody,
-			#wpcontent {
-				margin: 0 !important;
-				padding: 0 !important;
-				background: #fff !important;
-			}
+        <style type="text/css">
+            html,
+            html.wp-toolbar,
+            #wpbody,
+            #wpcontent {
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #fff !important;
+            }
 
-			.stuffbox {
-				border: 0 !important;
-				box-shadow: none;
-			}
+            .stuffbox {
+                border: 0 !important;
+                box-shadow: none;
+            }
 
-		</style>
-		<script type="text/javascript">
-			jQuery(document).ready(function ($) {
-				$("#wpwrap > #adminmenumain").remove();
-				$("#wpwrap > #wpcontent > #wpadminbar").remove();
-				$("#wpbody-content > #dfrcs_search_form_wrapper").prevAll().remove();
-				$("#wpwrap > #wpfooter").remove();
-			});
-		</script>
+        </style>
+        <script type="text/javascript">
+            jQuery(document).ready(function ($) {
+                $("#wpwrap > #adminmenumain").remove();
+                $("#wpwrap > #wpcontent > #wpadminbar").remove();
+                $("#wpbody-content > #dfrcs_search_form_wrapper").prevAll().remove();
+                $("#wpwrap > #wpfooter").remove();
+            });
+        </script>
 		<?php
 	}
 }
