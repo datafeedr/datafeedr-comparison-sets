@@ -69,6 +69,7 @@ function dfrcs_register_settings() {
 	add_settings_field( 'dfrcs_cache_lifetime_setting', 'Cache Lifetime', 'dfrcs_cache_lifetime', 'dfrcs_options', 'dfrcs_options_general' );
 	add_settings_field( 'dfrcs_max_api_requests_setting', 'Max. API Requests per Set', 'dfrcs_max_api_requests', 'dfrcs_options', 'dfrcs_options_general' );
 	add_settings_field( 'dfrcs_integrations_setting', 'Integrations', 'dfrcs_integrations', 'dfrcs_options', 'dfrcs_options_general' );
+	add_settings_field( 'dfrcs_prune_records_setting', 'Delete Old Sets', 'dfrcs_prune_records', 'dfrcs_options', 'dfrcs_options_general' );
 
 	// Display Settings
 	add_settings_section( 'dfrcs_options_display', 'Display Settings', 'dfrcs_options_display_desc', 'dfrcs_options' );
@@ -174,6 +175,33 @@ function dfrcs_integrations() {
 	echo '<p class="description">';
 	echo __( 'Enable specific integrations.', DFRCS_DOMAIN );
 	echo '</p>';
+}
+
+function dfrcs_prune_records() {
+	$key     = 'prune_records';
+	$name    = 'dfrcs_options[' . $key . ']';
+	$value   = dfrcs_get_option( $key );
+	$default = dfrcs_default_options( $key );
+
+	// Yes
+	echo '<label for="dfrcs_prune_records_true">';
+	echo '<input type="radio" name="' . $name . '" value="1" id="dfrcs_prune_records_true"' . checked( '1', $value, false ) . '> Yes' . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+	echo '</label>';
+
+	// No
+	echo '<label for="dfrcs_prune_records_false">';
+	echo '<input type="radio" name="' . $name . '" value="0" id="dfrcs_prune_records_false"' . checked( '0', $value, false ) . '> No';
+	echo '</label>';
+
+	echo '<p class="description">';
+	echo __( 'Delete Comparison Sets from your database which have not been updated in the past 30 days.', DFRCS_DOMAIN );
+	echo '<br />';
+	echo '<strong>' . __( 'Important: ', DFRCS_DOMAIN ) . '</strong>';
+	echo __( 'We recommend setting this to "Yes" to keep the size of your database smaller.', DFRCS_DOMAIN );
+	echo '<br />';
+	echo '<small>' . __( 'Default: ', DFRCS_DOMAIN );
+	echo ( '1' == $default ) ? __( 'Yes', DFRCS_DOMAIN ) : __( 'No', DFRCS_DOMAIN );
+	echo '</small></p>';
 }
 
 function dfrcs_display_method() {
@@ -575,6 +603,13 @@ function dfrcs_options_validate( $input ) {
 		$newinput['integrations'] = array_unique( $input['integrations'] );
 	} else {
 		$newinput['integrations'] = array();
+	}
+
+	// Prune Records
+	if ( isset( $input['prune_records'] ) && ( '1' == $input['prune_records'] ) ) {
+		$newinput['prune_records'] = '1';
+	} else {
+		$newinput['prune_records'] = '0';
 	}
 
 	// Display Method
@@ -1271,6 +1306,22 @@ function dfrcs_ajax_get_products() {
 	die;
 }
 
+/**
+ * Schedule Auto Pruning of the Comparison Sets database table if
+ * "prune_records" option is set to "1".
+ */
+add_action( 'wp_loaded', function () {
 
+	if ( ! class_exists( 'Dfrapi_Cron' ) ) {
+		return;
+	}
 
+	if ( dfrcs_get_option( 'prune_records' ) != '1' ) {
+		return;
+	}
 
+	Dfrapi_Cron::init( 'dfrcs_prune_compsets', HOUR_IN_SECONDS, function () {
+		$days = absint( apply_filters( 'dfrcs_prune_compsets_cron_job_days', 30 ) );
+		dfrcs_prune_compsets_table( $days );
+	} );
+} );

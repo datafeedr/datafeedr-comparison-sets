@@ -80,6 +80,7 @@ function dfrcs_default_options( $key = false ) {
 			'image',
 			'url',
 		),
+		'prune_records'            => '0',
 		'display_last_updated'     => '1',
 		'display_method'           => 'data',
 		'exclude_duplicate_fields' => array( 'merchant_id' ),
@@ -1282,4 +1283,27 @@ function dfrcs_wc_get_source_of_product( $product = false ) {
  */
 function dfrcs_wc_compset_priority() {
 	return apply_filters( 'dfrcs_wc_compset_priority', 0 );
+}
+
+/**
+ * Prune records from the "dfrcs_compsets" table where "updated" date is out of date (based on $interval).
+ *
+ * @param $days Number of days from NOW to prune records from. Default: 30
+ *
+ * @return bool|int|void Number of rows affected/selected or false on error or void if table name doesn't exist.
+ */
+function dfrcs_prune_compsets_table( $days ) {
+
+	if ( empty( DFRCS_TABLE ) ) {
+		return;
+	}
+
+	$days = absint( $days );
+	$days = $days === 0 ? 30 : $days;
+
+	global $wpdb;
+
+	$table = $wpdb->prefix . DFRCS_TABLE;
+
+	return $wpdb->query( "DELETE FROM $table WHERE `updated` < (NOW() - INTERVAL $days DAY) ORDER BY `updated` ASC LIMIT 100" );
 }
