@@ -722,9 +722,13 @@ function dfrcs_get_default_arg_keys() {
 }
 
 // @todo [future] 2016-02-04 13:33:10 - Maybe make this configurable. Maybe not.
+// Added filter for capability. 2021-02-09 10:53:16
 // Changed from 'edit_plugins' to 'manage_options' on 2017-04-18 10:07:36
 function dfrcs_can_manage_compset() {
-	if ( current_user_can( 'manage_options' ) ) {
+
+	$capability = apply_filters( 'dfrcs_manage_compsets_capability', 'manage_options' );
+
+	if ( current_user_can( $capability ) ) {
 		return true;
 	}
 
