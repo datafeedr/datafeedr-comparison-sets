@@ -60,7 +60,7 @@ function dfrcs_admin_menu() {
 		'admin.php',
 		'null',
 		'null',
-		'manage_options',
+		apply_filters( 'dfrcs_manage_compsets_capability', 'manage_options' ),
 		'dfrcs_add_products',
 		'dfrcs_add_products_output'
 	);

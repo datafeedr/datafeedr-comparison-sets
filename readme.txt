@@ -6,8 +6,8 @@ Tags: comparison, comparison sets, compsets, price, price comparison, price comp
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.8
-Tested up to: 5.7-alpha
-Stable tag: 0.9.45
+Tested up to: 5.7-beta
+Stable tag: 0.9.46
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
@@ -172,6 +172,10 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 3. This is the configuration page of the Datafeedr Comparison Sets plugin.
 
 == Changelog ==
+
+= 0.9.46 - 2020/02/16 =
+* Fixed jQuery migrate issues.
+* Updated add_submenu_page() capability with dfrcs_manage_compsets_capability filter.
 
 = 0.9.45 - 2020/02/09 =
 * Added manage compsets capability filter.
