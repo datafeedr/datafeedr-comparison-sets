@@ -57,7 +57,7 @@ function dfrcs_admin_menu() {
 
 	// Add page which allows users to add products to a compset. This doesn't need to appear in the navigation.
 	add_submenu_page(
-		'dashboard',
+		'admin.php',
 		'null',
 		'null',
 		apply_filters( 'dfrcs_manage_compsets_capability', 'manage_options' ),
