@@ -1214,14 +1214,25 @@ function dfrcs_get_compset_product_field( Dfrcs $compset, $field, $select ) {
  *
  * Description.
  *
+ * @param array $atts
+ *
  * @return void
  * @since 0.9.0
- *
  */
-function dfrcs_wc_single_product_page_compset() {
-	$source = dfrcs_wc_get_source_of_product();
+function dfrcs_wc_single_product_page_compset( $atts = [] ) {
+
+	$product = wc_get_product();
+
+	if ( ! is_a( $product, WC_Product::class ) ) {
+		return;
+	}
+
+	$source = dfrcs_wc_get_source_of_product( $product );
 
 	$source['context'] = 'wc_single_product_page';
+
+	$source = wp_parse_args( $atts, $source );
+
 	echo dfrcs_compset( $source );
 }
 
