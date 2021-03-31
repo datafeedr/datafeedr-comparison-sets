@@ -210,8 +210,8 @@ function dfrcs_title() {
 	$r = array(
 		$compset->num_products,
 		$compset->num_merchants,
-		dfrcs_currency( $compset->lowest_priced_product ) . dfrapi_int_to_price( $compset->lowest_priced_product['finalprice'] ),
-		dfrcs_currency( $compset->highest_priced_product ) . dfrapi_int_to_price( $compset->highest_priced_product['finalprice'] ),
+		dfrapi_get_price( $compset->lowest_priced_product['finalprice'], $compset->lowest_priced_product['currency'], 'compset' ),
+		dfrapi_get_price( $compset->highest_priced_product['finalprice'], $compset->highest_priced_product['currency'], 'compset' ),
 		$compset->source->final['name'],
 	);
 
