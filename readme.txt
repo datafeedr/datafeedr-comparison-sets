@@ -6,8 +6,8 @@ Tags: comparison, comparison sets, compsets, price, price comparison, price comp
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.8
-Tested up to: 5.8-alpha
-Stable tag: 0.9.50
+Tested up to: 5.9-alpha
+Stable tag: 0.9.51
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
@@ -149,6 +149,11 @@ Create a price comparison set using an EAN code:
 [dfrcs ean="737416080066"]
 `
 
+Create a price comparison set using an Amazon ASIN code:
+`
+[dfrcs asin="B07BN6KH6W"]
+`
+
 Create a price comparison set using an UPC code:
 `
 [dfrcs upc="050946872827"]
@@ -172,6 +177,9 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 3. This is the configuration page of the Datafeedr Comparison Sets plugin.
 
 == Changelog ==
+
+= 0.9.51 - 2020/09/01 =
+* Made the list of Amazon fields to query filterable.
 
 = 0.9.50 - 2020/04/01 =
 * Fixed undefined notice.

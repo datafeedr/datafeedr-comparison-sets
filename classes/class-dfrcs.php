@@ -824,7 +824,7 @@ class Dfrcs {
 
 		$param = false;
 
-		$fields = array( 'asin', 'isbn', 'barcodes', 'name' );
+		$fields = apply_filters( 'dfrcs_query_amazon_field_list', [ 'asin', 'isbn', 'barcodes', 'name' ], $this );
 
 		if ( ! dfrcs_get_option( 'query_by_amazon' ) ) {
 			return;
