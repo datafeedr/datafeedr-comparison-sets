@@ -92,6 +92,12 @@ function dfrcs_register_settings() {
 	add_settings_field( 'dfrcs_no_results_message_setting', 'No Results Message', 'dfrcs_no_results_message_setting', 'dfrcs_options', 'dfrcs_options_display' );
 	add_settings_field( 'dfrcs_used_label_setting', 'Used Label', 'dfrcs_used_label_setting', 'dfrcs_options', 'dfrcs_options_display' );
 
+	add_settings_field( 'dfrcs_display_image_setting', 'Display Image', 'dfrcs_display_image_setting', 'dfrcs_options', 'dfrcs_options_display' );
+	add_settings_field( 'dfrcs_display_logo_setting', 'Display Logo', 'dfrcs_display_logo_setting', 'dfrcs_options', 'dfrcs_options_display' );
+	add_settings_field( 'dfrcs_display_price_setting', 'Display Price', 'dfrcs_display_price_setting', 'dfrcs_options', 'dfrcs_options_display' );
+	add_settings_field( 'dfrcs_display_button_setting', 'Display Button', 'dfrcs_display_button_setting', 'dfrcs_options', 'dfrcs_options_display' );
+	add_settings_field( 'dfrcs_display_promo_setting', 'Display Promo', 'dfrcs_display_promo_setting', 'dfrcs_options', 'dfrcs_options_display' );
+
 	// Query Settings
 	add_settings_section( 'dfrcs_options_query', 'Query Settings', 'dfrcs_options_query_desc', 'dfrcs_options' );
 	add_settings_field( 'dfrcs_query_by_amazon_setting', 'Query Amazon', 'dfrcs_query_by_amazon', 'dfrcs_options', 'dfrcs_options_query' );
@@ -393,6 +399,126 @@ function dfrcs_used_label_setting() {
 	echo '</p>';
 }
 
+function dfrcs_display_image_setting() {
+	$key     = 'display_image';
+	$name    = 'dfrcs_options[' . $key . ']';
+	$value   = dfrcs_get_option( $key );
+	$default = dfrcs_default_options( $key );
+
+	// Yes
+	echo '<label for="dfrcs_display_image_true">';
+	echo '<input type="radio" name="' . $name . '" value="1" id="dfrcs_display_image_true"' . checked( '1', $value, false ) . '> Yes' . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+	echo '</label>';
+
+	// No
+	echo '<label for="dfrcs_display_image_false">';
+	echo '<input type="radio" name="' . $name . '" value="0" id="dfrcs_display_image_false"' . checked( '0', $value, false ) . '> No';
+	echo '</label>';
+
+	echo '<p class="description">';
+	echo __( 'Display the product image for each item in a Comparison Set.', DFRCS_DOMAIN );
+	echo '<br />';
+	echo '<small>' . __( 'Default: ', DFRCS_DOMAIN );
+	echo ( '1' == $default ) ? __( 'Yes', DFRCS_DOMAIN ) : __( 'No', DFRCS_DOMAIN );
+	echo '</small></p>';
+}
+
+function dfrcs_display_logo_setting() {
+	$key     = 'display_logo';
+	$name    = 'dfrcs_options[' . $key . ']';
+	$value   = dfrcs_get_option( $key );
+	$default = dfrcs_default_options( $key );
+
+	// Yes
+	echo '<label for="dfrcs_display_logo_true">';
+	echo '<input type="radio" name="' . $name . '" value="1" id="dfrcs_display_logo_true"' . checked( '1', $value, false ) . '> Yes' . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+	echo '</label>';
+
+	// No
+	echo '<label for="dfrcs_display_logo_false">';
+	echo '<input type="radio" name="' . $name . '" value="0" id="dfrcs_display_logo_false"' . checked( '0', $value, false ) . '> No';
+	echo '</label>';
+
+	echo '<p class="description">';
+	echo __( 'Display the merchant logo for each item in a Comparison Set.', DFRCS_DOMAIN );
+	echo '<br />';
+	echo '<small>' . __( 'Default: ', DFRCS_DOMAIN );
+	echo ( '1' == $default ) ? __( 'Yes', DFRCS_DOMAIN ) : __( 'No', DFRCS_DOMAIN );
+	echo '</small></p>';
+}
+
+function dfrcs_display_price_setting() {
+	$key     = 'display_price';
+	$name    = 'dfrcs_options[' . $key . ']';
+	$value   = dfrcs_get_option( $key );
+	$default = dfrcs_default_options( $key );
+
+	// Yes
+	echo '<label for="dfrcs_display_price_true">';
+	echo '<input type="radio" name="' . $name . '" value="1" id="dfrcs_display_price_true"' . checked( '1', $value, false ) . '> Yes' . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+	echo '</label>';
+
+	// No
+	echo '<label for="dfrcs_display_price_false">';
+	echo '<input type="radio" name="' . $name . '" value="0" id="dfrcs_display_price_false"' . checked( '0', $value, false ) . '> No';
+	echo '</label>';
+
+	echo '<p class="description">';
+	echo __( 'Display the product price for each item in a Comparison Set.', DFRCS_DOMAIN );
+	echo '<br />';
+	echo '<small>' . __( 'Default: ', DFRCS_DOMAIN );
+	echo ( '1' == $default ) ? __( 'Yes', DFRCS_DOMAIN ) : __( 'No', DFRCS_DOMAIN );
+	echo '</small></p>';
+}
+
+function dfrcs_display_button_setting() {
+	$key     = 'display_button';
+	$name    = 'dfrcs_options[' . $key . ']';
+	$value   = dfrcs_get_option( $key );
+	$default = dfrcs_default_options( $key );
+
+	// Yes
+	echo '<label for="dfrcs_display_button_true">';
+	echo '<input type="radio" name="' . $name . '" value="1" id="dfrcs_display_button_true"' . checked( '1', $value, false ) . '> Yes' . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+	echo '</label>';
+
+	// No
+	echo '<label for="dfrcs_display_button_false">';
+	echo '<input type="radio" name="' . $name . '" value="0" id="dfrcs_display_button_false"' . checked( '0', $value, false ) . '> No';
+	echo '</label>';
+
+	echo '<p class="description">';
+	echo __( 'Display the [View] button for each item in a Comparison Set.', DFRCS_DOMAIN );
+	echo '<br />';
+	echo '<small>' . __( 'Default: ', DFRCS_DOMAIN );
+	echo ( '1' == $default ) ? __( 'Yes', DFRCS_DOMAIN ) : __( 'No', DFRCS_DOMAIN );
+	echo '</small></p>';
+}
+
+function dfrcs_display_promo_setting() {
+	$key     = 'display_promo';
+	$name    = 'dfrcs_options[' . $key . ']';
+	$value   = dfrcs_get_option( $key );
+	$default = dfrcs_default_options( $key );
+
+	// Yes
+	echo '<label for="dfrcs_display_promo_true">';
+	echo '<input type="radio" name="' . $name . '" value="1" id="dfrcs_display_promo_true"' . checked( '1', $value, false ) . '> Yes' . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+	echo '</label>';
+
+	// No
+	echo '<label for="dfrcs_display_promo_false">';
+	echo '<input type="radio" name="' . $name . '" value="0" id="dfrcs_display_promo_false"' . checked( '0', $value, false ) . '> No';
+	echo '</label>';
+
+	echo '<p class="description">';
+	echo __( 'Display the promo text (if available) for each item in a Comparison Set.', DFRCS_DOMAIN );
+	echo '<br />';
+	echo '<small>' . __( 'Default: ', DFRCS_DOMAIN );
+	echo ( '1' == $default ) ? __( 'Yes', DFRCS_DOMAIN ) : __( 'No', DFRCS_DOMAIN );
+	echo '</small></p>';
+}
+
 function dfrcs_query_by_amazon() {
 	$key     = 'query_by_amazon';
 	$name    = 'dfrcs_options[' . $key . ']';
@@ -665,6 +791,41 @@ function dfrcs_options_validate( $input ) {
 	$newinput['used_label'] = trim( $input['used_label'] );
 	if ( empty( $newinput['used_label'] ) ) {
 		$newinput['used_label'] = dfrcs_default_options( 'used_label' );
+	}
+
+	// Display image
+	if ( isset( $input['display_image'] ) && ( '1' == $input['display_image'] ) ) {
+		$newinput['display_image'] = '1';
+	} else {
+		$newinput['display_image'] = '0';
+	}
+
+	// Display logo
+	if ( isset( $input['display_logo'] ) && ( '1' == $input['display_logo'] ) ) {
+		$newinput['display_logo'] = '1';
+	} else {
+		$newinput['display_logo'] = '0';
+	}
+
+	// Display price
+	if ( isset( $input['display_price'] ) && ( '1' == $input['display_price'] ) ) {
+		$newinput['display_price'] = '1';
+	} else {
+		$newinput['display_price'] = '0';
+	}
+
+	// Display button
+	if ( isset( $input['display_button'] ) && ( '1' == $input['display_button'] ) ) {
+		$newinput['display_button'] = '1';
+	} else {
+		$newinput['display_button'] = '0';
+	}
+
+	// Display promo
+	if ( isset( $input['display_promo'] ) && ( '1' == $input['display_promo'] ) ) {
+		$newinput['display_promo'] = '1';
+	} else {
+		$newinput['display_promo'] = '0';
 	}
 
 	// Minimum Viewing Capability

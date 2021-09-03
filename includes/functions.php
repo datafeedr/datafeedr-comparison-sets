@@ -102,6 +102,11 @@ function dfrcs_default_options( $key = false ) {
 		'query_by_name'            => '1',
 		'title'                    => __( 'Compare {num_products} Prices', DFRCS_DOMAIN ),
 		'used_label'               => __( 'Used', DFRCS_DOMAIN ),
+		'display_image'            => true,
+		'display_logo'             => true,
+		'display_price'            => true,
+		'display_button'           => true,
+		'display_promo'            => true,
 	);
 
 	if ( $key ) {
@@ -1310,4 +1315,64 @@ function dfrcs_prune_compsets_table( $days ) {
 	$table = $wpdb->prefix . DFRCS_TABLE;
 
 	return $wpdb->query( "DELETE FROM $table WHERE `updated` < (NOW() - INTERVAL $days DAY) ORDER BY `updated` ASC LIMIT 100" );
+}
+
+/**
+ * Whether to display the product's image in the Comparison Set.
+ *
+ * @return bool
+ */
+function dfrcs_display_image() {
+	global $dfrcs_product;
+	$display = (bool) dfrcs_get_option( 'display_image' );
+
+	return (bool) apply_filters( 'dfrcs_display_image', $display, $dfrcs_product );
+}
+
+/**
+ * Whether to display the merchant's logo in the Comparison Set.
+ *
+ * @return bool
+ */
+function dfrcs_display_logo() {
+	global $dfrcs_product;
+	$display = (bool) dfrcs_get_option( 'display_logo' );
+
+	return (bool) apply_filters( 'dfrcs_display_logo', $display, $dfrcs_product );
+}
+
+/**
+ * Whether to display the product's price in the Comparison Set.
+ *
+ * @return bool
+ */
+function dfrcs_display_price() {
+	global $dfrcs_product;
+	$display = (bool) dfrcs_get_option( 'display_price' );
+
+	return (bool) apply_filters( 'dfrcs_display_price', $display, $dfrcs_product );
+}
+
+/**
+ * Whether to display the [View] button in the Comparison Set.
+ *
+ * @return bool
+ */
+function dfrcs_display_button() {
+	global $dfrcs_product;
+	$display = (bool) dfrcs_get_option( 'display_button' );
+
+	return (bool) apply_filters( 'dfrcs_display_button', $display, $dfrcs_product );
+}
+
+/**
+ * Whether to display the product's promo text in the Comparison Set.
+ *
+ * @return bool
+ */
+function dfrcs_display_promo() {
+	global $dfrcs_product;
+	$display = (bool) dfrcs_get_option( 'display_promo' );
+
+	return (bool) apply_filters( 'dfrcs_display_promo', $display, $dfrcs_product );
 }

@@ -7,7 +7,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.8
 Tested up to: 5.9-alpha
-Stable tag: 0.9.51
+Stable tag: 0.9.52
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
@@ -177,6 +177,13 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 3. This is the configuration page of the Datafeedr Comparison Sets plugin.
 
 == Changelog ==
+
+= 0.9.52 - 2020/09/03 =
+* Added new setting to display or hide the product image for each item in a Comparison Set. (WordPress Admin Area > Datafeedr API > Comparison Set)
+* Added new setting to display or hide the merchant logo for each item in a Comparison Set. (WordPress Admin Area > Datafeedr API > Comparison Set)
+* Added new setting to display or hide the product price for each item in a Comparison Set. (WordPress Admin Area > Datafeedr API > Comparison Set)
+* Added new setting to display or hide the [View] button for each item in a Comparison Set. (WordPress Admin Area > Datafeedr API > Comparison Set)
+* Added new setting to display or hide the product promo text for each item in a Comparison Set. (WordPress Admin Area > Datafeedr API > Comparison Set)
 
 = 0.9.51 - 2020/09/01 =
 * Made the list of Amazon fields to query filterable.
