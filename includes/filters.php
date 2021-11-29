@@ -179,3 +179,40 @@ add_filter( 'debug_information', function ( $info ) {
 
 	return $info;
 } );
+
+/**
+ * Adds "Configuration" link under plugin name on Plugins page.
+ *
+ * @param array $links
+ *
+ * @return array
+ */
+function dfrcs_action_links( $links ) {
+	return array_merge(
+		$links,
+		array(
+			'config' => '<a href="' . admin_url( 'admin.php?page=dfrcs_options' ) . '">' . __( 'Configuration', DFRCS_DOMAIN ) . '</a>',
+		)
+	);
+}
+
+add_filter( 'plugin_action_links_' . 'datafeedr-comparison-sets/datafeedr-comparison-sets.php', 'dfrcs_action_links' );
+
+/**
+ * Adds link to Support and Documentation underneath plugin description on Plugins page.
+ *
+ * @param array $links
+ * @param string $plugin_file
+ *
+ * @return mixed
+ */
+function dfrcs_plugin_row_meta( $links, $plugin_file ) {
+	if ( $plugin_file === 'datafeedr-comparison-sets/datafeedr-comparison-sets.php' ) {
+		$links[] = sprintf( '<a href="' . DFRAPI_DOCS_URL . '" target="_blank">%s</a>', __( 'Documentation', DFRAPI_DOMAIN ) );
+		$links[] = sprintf( '<a href="' . DFRAPI_HELP_URL . '" target="_blank">%s</a>', __( 'Support', DFRAPI_DOMAIN ) );
+	}
+
+	return $links;
+}
+
+add_filter( 'plugin_row_meta', 'dfrcs_plugin_row_meta', 10, 2 );
