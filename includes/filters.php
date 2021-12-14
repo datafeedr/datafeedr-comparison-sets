@@ -216,3 +216,96 @@ function dfrcs_plugin_row_meta( $links, $plugin_file ) {
 }
 
 add_filter( 'plugin_row_meta', 'dfrcs_plugin_row_meta', 10, 2 );
+
+/**
+ * Enable the "promo" section for Amazon products.
+ *
+ * @param bool $display Whether to display the Promo section or not.
+ * @param array $dfrcs_product The product array.
+ *
+ * @return bool
+ */
+function dfrcs_display_enable_promo_for_amazon_products( bool $display, array $dfrcs_product ): bool {
+	return absint( $dfrcs_product['merchant_id'] ) === 7777 ? true : $display;
+}
+
+add_filter( 'dfrcs_display_promo', 'dfrcs_display_enable_promo_for_amazon_products', 10, 2 );
+
+/**
+ * Append Amazon disclaimer to the promo field.
+ *
+ * @param string $html
+ * @param array $product
+ *
+ * @return string
+ */
+function dfrcs_display_amazon_disclaimer( string $html, array $product = [] ): string {
+
+	global $compset;
+
+	if ( empty( $product ) ) {
+		return $html;
+	}
+
+	if ( absint( $product['merchant_id'] ) !== 7777 ) {
+		return $html;
+	}
+
+	// Get from options
+	$title           = dfrcs_get_option( 'amazon_disclaimer_title' );
+	$anchor          = dfrcs_get_option( 'amazon_disclaimer_anchor' );
+	$message         = dfrcs_get_option( 'amazon_disclaimer_message' );
+	$date_format     = dfrcs_get_option( 'amazon_disclaimer_date_format' );
+	$timezone_format = dfrcs_get_option( 'amazon_disclaimer_timezone_format' );
+
+	$tld = dfrapi_str_before( dfrapi_str_after( strtolower( $product['url'] ), 'amazon' ), '/' );
+
+	$amazon     = apply_filters( 'dfrcs_amazon_disclaimer_company_name', sprintf( 'Amazon%s', $tld ), $compset, $product );
+	$finalprice = apply_filters( 'dfrcs_amazon_disclaimer_product_price', dfrapi_get_price( $product['finalprice'], $product['currency'], 'amazon-disclaimer' ), $compset, $product );
+	$timestamp  = apply_filters( 'dfrcs_amazon_disclaimer_timestamp', date( esc_html( $date_format ), strtotime( $compset->date_updated ) ), $compset, $product );
+	$timezone   = apply_filters( 'dfrcs_amazon_disclaimer_timezone', date_i18n( esc_html( $timezone_format ) ), $compset, $product );
+	$anchor     = apply_filters( 'dfrcs_amazon_disclaimer_anchor', $anchor, $compset, $product );
+
+	$translations = [
+		'{amazon}'       => esc_html( $amazon ),
+		'{finalprice}'   => esc_html( $finalprice ),
+		'{timestamp}'    => esc_html( $timestamp ),
+		'{timezone}'     => esc_html( $timezone ),
+		'{product_name}' => esc_html( $product['name'] ),
+	];
+
+	$translations = apply_filters( 'dfrcs_amazon_disclaimer_translations', $translations, $compset, $product );
+
+	$title = apply_filters( 'dfrcs_amazon_disclaimer_title', $title, $compset, $product );
+	$title = strtr( $title, $translations );
+
+	$message = apply_filters(
+		'dfrcs_amazon_disclaimer_message',
+		strtr( $message, $translations ),
+		$compset,
+		$product
+	);
+
+	if ( ! $title && ! $message && ! $anchor ) {
+		return $html;
+	}
+
+	$disclaimer_format = apply_filters(
+		'dfrcs_amazon_disclaimer_html_format',
+		'<details class="dfrcs_amazon_disclaimer"><summary>%1$s <span>%2$s</span></summary><p>%3$s</p></details>',
+		$compset,
+		$product
+	);
+
+	$disclaimer = sprintf(
+		$disclaimer_format,
+		esc_html( $title ),
+		esc_html( $anchor ),
+		wp_kses( $message, [ 'br' => [], 'a' => [], 'strong' => [], 'em' => [] ] )
+	);
+
+	return $html . $disclaimer;
+}
+
+add_filter( 'dfrcs_promo', 'dfrcs_display_amazon_disclaimer', 10, 2 );
+

@@ -91,7 +91,6 @@ function dfrcs_register_settings() {
 	add_settings_field( 'dfrcs_debug_fields_setting', 'Debug Fields', 'dfrcs_debug_fields', 'dfrcs_options', 'dfrcs_options_display' );
 	add_settings_field( 'dfrcs_no_results_message_setting', 'No Results Message', 'dfrcs_no_results_message_setting', 'dfrcs_options', 'dfrcs_options_display' );
 	add_settings_field( 'dfrcs_used_label_setting', 'Used Label', 'dfrcs_used_label_setting', 'dfrcs_options', 'dfrcs_options_display' );
-
 	add_settings_field( 'dfrcs_display_image_setting', 'Display Image', 'dfrcs_display_image_setting', 'dfrcs_options', 'dfrcs_options_display' );
 	add_settings_field( 'dfrcs_display_logo_setting', 'Display Logo', 'dfrcs_display_logo_setting', 'dfrcs_options', 'dfrcs_options_display' );
 	add_settings_field( 'dfrcs_display_price_setting', 'Display Price', 'dfrcs_display_price_setting', 'dfrcs_options', 'dfrcs_options_display' );
@@ -110,6 +109,14 @@ function dfrcs_register_settings() {
 	add_settings_field( 'dfrcs_brand_name_stopwords_setting', 'Brand Name Stopwords', 'dfrcs_brand_name_stopwords', 'dfrcs_options', 'dfrcs_options_query' );
 	add_settings_field( 'dfrcs_mandatory_keywords_setting', 'Mandatory Keywords', 'dfrcs_mandatory_keywords', 'dfrcs_options', 'dfrcs_options_query' );
 	add_settings_field( 'dfrcs_product_name_stopwords_setting', 'Product Name Stopwords', 'dfrcs_product_name_stopwords', 'dfrcs_options', 'dfrcs_options_query' );
+
+	// Amazon Disclaimer
+	add_settings_section( 'dfrcs_options_amazon', 'Amazon Disclaimer', 'dfrcs_options_amazon_disclaimer', 'dfrcs_options' );
+	add_settings_field( 'dfrcs_amazon_disclaimer_title_setting', 'Disclaimer Title', 'dfrcs_amazon_disclaimer_title_setting', 'dfrcs_options', 'dfrcs_options_amazon' );
+	add_settings_field( 'dfrcs_amazon_disclaimer_message_setting', 'Disclaimer Message', 'dfrcs_amazon_disclaimer_message_setting', 'dfrcs_options', 'dfrcs_options_amazon' );
+	add_settings_field( 'dfrcs_amazon_disclaimer_anchor_setting', 'More Info Link', 'dfrcs_amazon_disclaimer_anchor_setting', 'dfrcs_options', 'dfrcs_options_amazon' );
+	add_settings_field( 'dfrcs_amazon_disclaimer_date_format_setting', 'Date Format', 'dfrcs_amazon_disclaimer_date_format_setting', 'dfrcs_options', 'dfrcs_options_amazon' );
+	add_settings_field( 'dfrcs_amazon_disclaimer_timezone_format_setting', 'Date Format', 'dfrcs_amazon_disclaimer_timezone_format_setting', 'dfrcs_options', 'dfrcs_options_amazon' );
 }
 
 /**
@@ -717,6 +724,89 @@ function dfrcs_product_name_stopwords() {
 	echo '</p>';
 }
 
+function dfrcs_options_amazon_disclaimer() {
+	echo '<p>';
+	echo __( 'These settings control the required Amazon disclaimer which displays for Amazon products in your Comparison Sets. ', DFRCS_DOMAIN );
+	echo '<a href="https://affiliate-program.amazon.com/help/operating/policies" target="_blank" rel="noopener">';
+	echo __( 'Learn more', DFRCS_DOMAIN );
+	echo '</a>';
+	echo '</p>';
+}
+
+function dfrcs_amazon_disclaimer_title_setting() {
+	$key     = 'amazon_disclaimer_title';
+	$name    = 'dfrcs_options[' . $key . ']';
+	$value   = dfrcs_get_option( $key );
+	$default = dfrcs_default_options( $key );
+	echo '<input type="text" name="' . $name . '" value="' . esc_attr( $value ) . '" class="large-text">';
+	echo '<p class="description">';
+	echo __( 'The label of the disclaimer message.', DFRCS_DOMAIN );
+	echo '<br />';
+	echo __( 'Available placeholders: ', DFRCS_DOMAIN );
+	echo '<code>{amazon}</code> <code>{finalprice}</code> <code>{timestamp}</code> <code>{timezone}</code> <code>{product_name}</code>';
+	echo '<br />';
+	echo '<small>' . __( 'Default: ', DFRCS_DOMAIN ) . $default . '</small>';
+	echo '</p>';
+}
+
+function dfrcs_amazon_disclaimer_message_setting() {
+	$key     = 'amazon_disclaimer_message';
+	$name    = 'dfrcs_options[' . $key . ']';
+	$value   = dfrcs_get_option( $key );
+	$default = dfrcs_default_options( $key );
+	echo '<input type="text" name="' . $name . '" value="' . esc_attr( $value ) . '" class="large-text">';
+	echo '<p class="description">';
+	echo __( 'The primary disclaimer message.', DFRCS_DOMAIN );
+	echo '<br />';
+	echo '<small>' . __( 'Default: ', DFRCS_DOMAIN ) . $default . '</small>';
+	echo '</p>';
+}
+
+function dfrcs_amazon_disclaimer_anchor_setting() {
+	$key     = 'amazon_disclaimer_anchor';
+	$name    = 'dfrcs_options[' . $key . ']';
+	$value   = dfrcs_get_option( $key );
+	$default = dfrcs_default_options( $key );
+	echo '<input type="text" name="' . $name . '" value="' . esc_attr( $value ) . '" class="regular-text">';
+	echo '<p class="description">';
+	echo __( 'The anchor text for the link to view more information. Recommended: Details or More info', DFRCS_DOMAIN );
+	echo '<br />';
+	echo '<small>' . __( 'Default: ', DFRCS_DOMAIN ) . $default . '</small>';
+	echo '</p>';
+}
+
+function dfrcs_amazon_disclaimer_date_format_setting() {
+	$key     = 'amazon_disclaimer_date_format';
+	$name    = 'dfrcs_options[' . $key . ']';
+	$value   = dfrcs_get_option( $key );
+	$default = dfrcs_default_options( $key );
+	echo '<input type="text" name="' . $name . '" value="' . esc_attr( $value ) . '" class="regular-text">';
+	echo '<p class="description">';
+	echo __( 'The format the date and time should appear. ', DFRCS_DOMAIN );
+	echo '<a href="https://www.w3schools.com/php/func_date_date.asp" target="_blank" rel="noopener">';
+	echo __( 'Valid formats', DFRCS_DOMAIN );
+	echo '</a>';
+	echo '<br />';
+	echo '<small>' . __( 'Default: ', DFRCS_DOMAIN ) . $default . '</small>';
+	echo '</p>';
+}
+
+function dfrcs_amazon_disclaimer_timezone_format_setting() {
+	$key     = 'amazon_disclaimer_timezone_format';
+	$name    = 'dfrcs_options[' . $key . ']';
+	$value   = dfrcs_get_option( $key );
+	$default = dfrcs_default_options( $key );
+	echo '<input type="text" name="' . $name . '" value="' . esc_attr( $value ) . '" class="small-text">';
+	echo '<p class="description">';
+	echo __( 'The format the timezone should appear. ', DFRCS_DOMAIN );
+	echo '<a href="https://www.w3schools.com/php/func_date_date.asp" target="_blank" rel="noopener">';
+	echo __( 'Valid formats', DFRCS_DOMAIN );
+	echo '</a>';
+	echo '<br />';
+	echo '<small>' . __( 'Default: ', DFRCS_DOMAIN ) . $default . '</small>';
+	echo '</p>';
+}
+
 function dfrcs_options_validate( $input ) {
 
 	// Cache Lifetime
@@ -922,6 +1012,23 @@ function dfrcs_options_validate( $input ) {
 	$newinput['product_name_stopwords'] = str_replace( " ", "", $newinput['product_name_stopwords'] );
 	$newinput['product_name_stopwords'] = explode( ",", $newinput['product_name_stopwords'] );
 	$newinput['product_name_stopwords'] = array_filter( array_unique( $newinput['product_name_stopwords'] ) );
+
+	// Amazon Disclaimer Title, Anchor and Message (all can be empty)
+	$newinput['amazon_disclaimer_title'] = trim( $input['amazon_disclaimer_title'] );
+	$newinput['amazon_disclaimer_anchor'] = trim( $input['amazon_disclaimer_anchor'] );
+	$newinput['amazon_disclaimer_message'] = trim( $input['amazon_disclaimer_message'] );
+
+	// Amazon Disclaimer Date format
+	$newinput['amazon_disclaimer_date_format'] = trim( $input['amazon_disclaimer_date_format'] );
+	if ( empty( $newinput['amazon_disclaimer_date_format'] ) ) {
+		$newinput['amazon_disclaimer_date_format'] = dfrcs_default_options( 'amazon_disclaimer_date_format' );
+	}
+
+	// Amazon Disclaimer Timezone format
+	$newinput['amazon_disclaimer_timezone_format'] = trim( $input['amazon_disclaimer_timezone_format'] );
+	if ( empty( $newinput['amazon_disclaimer_timezone_format'] ) ) {
+		$newinput['amazon_disclaimer_timezone_format'] = dfrcs_default_options( 'amazon_disclaimer_timezone_format' );
+	}
 
 	return $newinput;
 }

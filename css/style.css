@@ -445,3 +445,17 @@
 .dfrcs .dfrcs_no_results_message {
     padding-bottom: 1em;
 }
+
+.dfrcs .dfrcs_amazon_disclaimer {
+    color: #666;
+    font-size: 12px !important;
+    margin: 10px;
+}
+
+.dfrcs .dfrcs_amazon_disclaimer summary > span {
+    text-decoration: underline;
+}
+
+.dfrcs .dfrcs_amazon_disclaimer p {
+    margin-top: 4px
+}

@@ -6,8 +6,8 @@ Tags: comparison, comparison sets, compsets, price, price comparison, price comp
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.8
-Tested up to: 5.9-alpha
-Stable tag: 0.9.53
+Tested up to: 5.9-beta2
+Stable tag: 0.9.54
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
@@ -178,8 +178,11 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 
 == Changelog ==
 
+= 0.9.54 - 2021/12/14 =
+* Added support for new Amazon disclaimer message.
+
 = 0.9.53 - 2021/11/29 =
-* Addeed links to Documentation, Support and Configuration page for plugin on Plugins page.
+* Added links to Documentation, Support and Configuration page for plugin on Plugins page.
 
 = 0.9.52 - 2020/09/03 =
 * Added new setting to display or hide the product image for each item in a Comparison Set. (WordPress Admin Area > Datafeedr API > Comparison Set)
