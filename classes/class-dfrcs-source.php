@@ -137,6 +137,9 @@ class Dfrcs_Source {
 			return;
 		}
 
+		// Replace &amp; with & because sometimes the ampersand is encoded by WordPress.
+		$source['filters'] = str_replace( '&amp;', '&', $source['filters'] );
+
 		parse_str( $source['filters'], $filter_args );
 
 		$valid_filters = dfrcs_valid_filters();

@@ -6,8 +6,8 @@ Tags: comparison, comparison sets, compsets, price, price comparison, price comp
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.8
-Tested up to: 5.9-beta2
-Stable tag: 0.9.54
+Tested up to: 6.0-alpha
+Stable tag: 0.9.55
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
@@ -16,6 +16,14 @@ Automatically create price comparison sets for your WooCommerce products or by u
 The Datafeedr Comparison Set plugin automatically creates price comparison sets for any product in your WooCommerce store or by using a shortcode.
 
 > **Heads-up!** — This plugin requires that you have an active subscription to one of our API plans. Purchase a subscription [here](https://members.datafeedr.com/subscribe/api?utm_campaign=dfrapiplugin&utm_medium=referral&utm_source=wporg).
+
+**Requirements**
+
+* PHP 7.4 or greater
+* MySQL version 5.6 or greater
+* [WordPress memory limit of 256 MB or greater](https://codex.wordpress.org/Editing_wp-config.php#Increasing_memory_allocated_to_PHP)
+* [Datafeedr API Plugin](https://wordpress.org/plugins/datafeedr-api/)
+* [HTTPS support](https://wordpress.org/news/2016/12/moving-toward-ssl/)
 
 = API Usage =
 
@@ -177,6 +185,9 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 3. This is the configuration page of the Datafeedr Comparison Sets plugin.
 
 == Changelog ==
+
+= 0.9.55 - 2022/02/07 =
+* Fixed issue where `&` in `filters` param in shortcode was being converted to `&amp;` causing the filters param to break.
 
 = 0.9.54 - 2021/12/14 =
 * Added support for new Amazon disclaimer message.
