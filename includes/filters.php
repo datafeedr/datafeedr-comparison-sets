@@ -208,8 +208,8 @@ add_filter( 'plugin_action_links_' . 'datafeedr-comparison-sets/datafeedr-compar
  */
 function dfrcs_plugin_row_meta( $links, $plugin_file ) {
 	if ( $plugin_file === 'datafeedr-comparison-sets/datafeedr-comparison-sets.php' ) {
-		$links[] = sprintf( '<a href="' . DFRAPI_DOCS_URL . '" target="_blank">%s</a>', __( 'Documentation', 'datafeedr-api' ) );
-		$links[] = sprintf( '<a href="' . DFRAPI_HELP_URL . '" target="_blank">%s</a>', __( 'Support', 'datafeedr-api' ) );
+		$links[] = sprintf( '<a href="' . DFRAPI_DOCS_URL . '" target="_blank">%s</a>', __( 'Documentation', 'datafeedr-comparison-sets' ) );
+		$links[] = sprintf( '<a href="' . DFRAPI_HELP_URL . '" target="_blank">%s</a>', __( 'Support', 'datafeedr-comparison-sets' ) );
 	}
 
 	return $links;
