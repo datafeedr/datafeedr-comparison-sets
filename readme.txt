@@ -5,9 +5,10 @@ Donate link: https://www.datafeedr.com/
 Tags: comparison, comparison sets, compsets, price, price comparison, price compare, price comparison set, datafeedr, affiliate products, dfrapi
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Requires PHP: 7.4
 Requires at least: 3.8
 Tested up to: 6.0-alpha
-Stable tag: 0.9.56
+Stable tag: 0.9.57
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
@@ -185,6 +186,11 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 3. This is the configuration page of the Datafeedr Comparison Sets plugin.
 
 == Changelog ==
+
+= 0.9.57 - 2022/03/02 =
+* Added a minimum WordPress version check to the `register_activation_hook`
+* Added a Multisite check to the `register_activation_hook` to ensure that plugin can only be activated at Site-Level, not Network-Level
+* Added "Requires PHP: 7.4" to plugin headers
 
 = 0.9.56 - 2022/02/10 =
 * Replaced `DFRAPI_DOMAIN` with `'datafeedr-comparison-sets'`.

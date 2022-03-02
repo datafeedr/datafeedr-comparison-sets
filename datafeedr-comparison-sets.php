@@ -5,13 +5,15 @@ Plugin URI: https://www.datafeedr.com
 Description: Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 Author: datafeedr.com
 Author URI: https://www.datafeedr.com
+Text Domain: datafeedr-comparison-sets
 License: GPL v3
+Requires PHP: 7.4
 Requires at least: 3.8
 Tested up to: 6.0-alpha
-Version: 0.9.56
+Version: 0.9.57
 
 WC requires at least: 3.0
-WC tested up to: 6.1
+WC tested up to: 6.2
 
 Datafeedr Comparison Sets Plugin
 Copyright (C) 2022, Datafeedr - help@datafeedr.com
@@ -40,7 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define constants.
  */
-define( 'DFRCS_VERSION', '0.9.56' );
+define( 'DFRCS_VERSION', '0.9.57' );
 define( 'DFRCS_DB_VERSION', '0.9.0' );
 define( 'DFRCS_URL', plugin_dir_url( __FILE__ ) );
 define( 'DFRCS_PATH', plugin_dir_path( __FILE__ ) );
@@ -89,7 +91,26 @@ require_once( DFRCS_PATH . 'includes/filters.php' );
  *
  */
 register_activation_hook( __FILE__, 'dfrcs_activate' );
-function dfrcs_activate() {
+function dfrcs_activate( bool $network_wide ) {
+
+	// Check that minimum WordPress requirement has been met.
+	$version = get_bloginfo( 'version' );
+	if ( version_compare( $version, '3.8', '<' ) ) {
+		deactivate_plugins( DFRCS_BASENAME );
+		wp_die( __(
+			'The Datafeedr Comparison Sets Plugin could not be activated because it requires WordPress version 3.8 or greater. Please upgrade your installation of WordPress.',
+			'datafeedr-comparison-sets'
+		) );
+	}
+
+	// Check that plugin is not being activated at the Network level on Multisite sites.
+	if ( $network_wide && is_multisite() ) {
+		deactivate_plugins( DFRCS_BASENAME );
+		wp_die( __(
+			'The Datafeedr Comparison Sets plugin cannot be activated at the Network-level. Please activate the Datafeedr Comparison Sets plugin at the Site-level instead.',
+			'datafeedr-comparison-sets'
+		) );
+	}
 
 	// Add default options if 'dfrcs_options' does not exist in the options table.
 	$options = get_option( 'dfrcs_options' );
