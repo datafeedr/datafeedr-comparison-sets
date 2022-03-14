@@ -7,8 +7,12 @@
  */
 class Dfrcs {
 
+	/**
+	 * @var Dfrcs_Source
+	 */
+	public $source;
+
 	// Public Properties
-	public $source; // Object
 	public $cached = false;
 	public $cache_checked = false;
 	public $cache_is_expired = true;
@@ -947,7 +951,9 @@ class Dfrcs {
 
 			// Add additional model numbers &/or barcodes but only if this product has not been removed.
 			if ( ! in_array( $asin, (array) $this->removed ) ) {
-				$this->source->build( $product );
+				if ( (bool) apply_filters( 'dfrcs_use_amazon_data_in_search', dfrcs_use_amazon_data_in_search(), $this ) ) {
+					$this->source->build( $product );
+				}
 			} else {
 				$this->log( 'query_amazon_by_' . $field . '/removed', $asin );
 			}

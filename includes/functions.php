@@ -96,6 +96,7 @@ function dfrcs_default_options( $key = false ) {
 		'no_results_message'                => 'Sorry, no prices available at this time.',
 		'post_id'                           => '',
 		'product_name_stopwords'            => array( 'sale', 'closeout', 'closeouts', 'for', 'the', 'with', 'new' ),
+		'use_amazon_data_in_search'         => true,
 		'query_by_amazon'                   => '1',
 		'query_by_barcodes'                 => '1',
 		'query_by_model'                    => '1',
@@ -1327,7 +1328,7 @@ function dfrcs_prune_compsets_table( $days ) {
  *
  * @return bool
  */
-function dfrcs_display_image() {
+function dfrcs_display_image(): bool {
 	global $dfrcs_product;
 	$display = (bool) dfrcs_get_option( 'display_image' );
 
@@ -1339,7 +1340,7 @@ function dfrcs_display_image() {
  *
  * @return bool
  */
-function dfrcs_display_logo() {
+function dfrcs_display_logo(): bool {
 	global $dfrcs_product;
 	$display = (bool) dfrcs_get_option( 'display_logo' );
 
@@ -1351,7 +1352,7 @@ function dfrcs_display_logo() {
  *
  * @return bool
  */
-function dfrcs_display_price() {
+function dfrcs_display_price(): bool {
 	global $dfrcs_product;
 	$display = (bool) dfrcs_get_option( 'display_price' );
 
@@ -1363,7 +1364,7 @@ function dfrcs_display_price() {
  *
  * @return bool
  */
-function dfrcs_display_button() {
+function dfrcs_display_button(): bool {
 	global $dfrcs_product;
 	$display = (bool) dfrcs_get_option( 'display_button' );
 
@@ -1375,9 +1376,18 @@ function dfrcs_display_button() {
  *
  * @return bool
  */
-function dfrcs_display_promo() {
+function dfrcs_display_promo(): bool {
 	global $dfrcs_product;
 	$display = (bool) dfrcs_get_option( 'display_promo' );
 
 	return (bool) apply_filters( 'dfrcs_display_promo', $display, $dfrcs_product );
+}
+
+/**
+ * Whether to use Amazon data in searches when generating Comparison Sets. Default: true.
+ *
+ * @return bool
+ */
+function dfrcs_use_amazon_data_in_search(): bool {
+	return (bool) dfrcs_get_option( 'use_amazon_data_in_search' );
 }

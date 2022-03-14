@@ -104,6 +104,7 @@ function dfrcs_register_settings() {
 	add_settings_field( 'dfrcs_query_by_model_setting', 'Query by Model Number', 'dfrcs_query_by_model', 'dfrcs_options', 'dfrcs_options_query' );
 	add_settings_field( 'dfrcs_query_by_barcodes_setting', 'Query by Barcodes', 'dfrcs_query_by_barcodes', 'dfrcs_options', 'dfrcs_options_query' );
 	add_settings_field( 'dfrcs_keyword_accuracy_setting', 'Keyword Accuracy', 'dfrcs_keyword_accuracy', 'dfrcs_options', 'dfrcs_options_query' );
+	add_settings_field( 'dfrcs_use_amazon_data_in_search_setting', 'Use Amazon Data', 'dfrcs_use_amazon_data_in_search_setting', 'dfrcs_options', 'dfrcs_options_query' );
 	add_settings_field( 'dfrcs_exclude_duplicate_fields_setting', 'Exclude Duplicates Fields', 'dfrcs_exclude_duplicate_fields', 'dfrcs_options', 'dfrcs_options_query' );
 	add_settings_field( 'dfrcs_barcode_fields_setting', 'Barcode Fields', 'dfrcs_barcode_fields', 'dfrcs_options', 'dfrcs_options_query' );
 	add_settings_field( 'dfrcs_brand_name_stopwords_setting', 'Brand Name Stopwords', 'dfrcs_brand_name_stopwords', 'dfrcs_options', 'dfrcs_options_query' );
@@ -638,6 +639,33 @@ function dfrcs_query_by_barcodes() {
 	echo '</small></p>';
 }
 
+function dfrcs_use_amazon_data_in_search_setting() {
+	$key     = 'use_amazon_data_in_search';
+	$name    = 'dfrcs_options[' . $key . ']';
+	$value   = dfrcs_get_option( $key );
+	$default = dfrcs_default_options( $key );
+
+	// Yes
+	echo '<label for="dfrcs_use_amazon_data_in_search_true">';
+	echo '<input type="radio" name="' . $name . '" value="1" id="dfrcs_use_amazon_data_in_search_true"' . checked( '1', $value, false ) . '> Yes' . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+	echo '</label>';
+
+	// No
+	echo '<label for="dfrcs_use_amazon_data_in_search_false">';
+	echo '<input type="radio" name="' . $name . '" value="0" id="dfrcs_use_amazon_data_in_search_false"' . checked( '0', $value, false ) . '> No';
+	echo '</label>';
+
+	echo '<p class="description">';
+	echo __( 'Use data returned by Amazon in the query to find products.', DFRCS_DOMAIN );
+	echo '<br />';
+	echo '<strong>' . __( 'Note: ', DFRCS_DOMAIN ) . '</strong>';
+	echo __( 'If your Comparison Sets are returning inaccurate results, we recommend setting this to "No".', DFRCS_DOMAIN );
+	echo '<br />';
+	echo '<small>' . __( 'Default: ', DFRCS_DOMAIN );
+	echo ( '1' == $default ) ? __( 'Yes', DFRCS_DOMAIN ) : __( 'No', DFRCS_DOMAIN );
+	echo '</small></p>';
+}
+
 function dfrcs_keyword_accuracy() {
 	$key     = 'keyword_accuracy';
 	$name    = 'dfrcs_options[' . $key . ']';
@@ -953,11 +981,19 @@ function dfrcs_options_validate( $input ) {
 	} else {
 		$newinput['query_by_model'] = '0';
 	}
+
 	// Query by Barcodes
 	if ( isset( $input['query_by_barcodes'] ) && ( '1' == $input['query_by_barcodes'] ) ) {
 		$newinput['query_by_barcodes'] = '1';
 	} else {
 		$newinput['query_by_barcodes'] = '0';
+	}
+
+	// Use Amazon Data
+	if ( isset( $input['use_amazon_data_in_search'] ) && ( '1' == $input['use_amazon_data_in_search'] ) ) {
+		$newinput['use_amazon_data_in_search'] = '1';
+	} else {
+		$newinput['use_amazon_data_in_search'] = '0';
 	}
 
 	// Keyword Accuracy

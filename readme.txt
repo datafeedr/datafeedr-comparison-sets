@@ -8,7 +8,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 7.4
 Requires at least: 3.8
 Tested up to: 6.0-alpha
-Stable tag: 0.9.57
+Stable tag: 0.9.58
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
@@ -186,6 +186,13 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 3. This is the configuration page of the Datafeedr Comparison Sets plugin.
 
 == Changelog ==
+
+= 0.9.58 - 2022/03/14 =
+* Added option to disable using Amazon data in Comparison Set product search. Useful if Comparison Sets are returning inaccurate results.
+* Added return values for some functions.
+* Updated `require_once` statements.
+* Added `DFRCS_PLUGIN_FILE` constant.
+* Updated `WC tested up to` to 6.3.
 
 = 0.9.57 - 2022/03/02 =
 * Added a minimum WordPress version check to the `register_activation_hook`

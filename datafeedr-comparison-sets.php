@@ -10,10 +10,10 @@ License: GPL v3
 Requires PHP: 7.4
 Requires at least: 3.8
 Tested up to: 6.0-alpha
-Version: 0.9.57
+Version: 0.9.58
 
 WC requires at least: 3.0
-WC tested up to: 6.2
+WC tested up to: 6.3
 
 Datafeedr Comparison Sets Plugin
 Copyright (C) 2022, Datafeedr - help@datafeedr.com
@@ -42,11 +42,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define constants.
  */
-define( 'DFRCS_VERSION', '0.9.57' );
+define( 'DFRCS_VERSION', '0.9.58' );
 define( 'DFRCS_DB_VERSION', '0.9.0' );
 define( 'DFRCS_URL', plugin_dir_url( __FILE__ ) );
 define( 'DFRCS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'DFRCS_BASENAME', plugin_basename( __FILE__ ) );
+define( 'DFRCS_PLUGIN_FILE', __FILE__ ); // /absolute/path/to/wp-content/plugins/datafeedr-comparison-sets/datafeedr-comparison-sets.php
 define( 'DFRCS_DOMAIN', 'datafeedr-comparison-sets' );
 define( 'DFRCS_PREFIX', 'dfrcs' );
 define( 'DFRCS_TABLE', 'dfrcs_compsets' );
@@ -54,32 +55,32 @@ define( 'DFRCS_TABLE', 'dfrcs_compsets' );
 /**
  * Load upgrade file.
  */
-require_once( DFRCS_PATH . 'includes/upgrade.php' );
+require_once dirname( DFRCS_PLUGIN_FILE ) . '/includes/upgrade.php';
 
 /**
  * Require classes.
  */
-require_once( DFRCS_PATH . 'classes/class-datafeedr-plugin-dependency.php' );
-require_once( DFRCS_PATH . 'classes/class-dfrcs.php' );
-require_once( DFRCS_PATH . 'classes/class-dfrcs-source.php' );
+require_once dirname( DFRCS_PLUGIN_FILE ) . '/classes/class-datafeedr-plugin-dependency.php';
+require_once dirname( DFRCS_PLUGIN_FILE ) . '/classes/class-dfrcs.php';
+require_once dirname( DFRCS_PLUGIN_FILE ) . '/classes/class-dfrcs-source.php';
 
 /**
  * Include functions file.
  */
-require_once( DFRCS_PATH . 'includes/functions.php' );
+require_once dirname( DFRCS_PLUGIN_FILE ) . '/includes/functions.php';
 
 /**
  * Include backend functions file while in /wp-admin.
  */
 if ( is_admin() ) {
-	require_once( DFRCS_PATH . 'includes/functions-admin.php' );
+	require_once dirname( DFRCS_PLUGIN_FILE ) . '/includes/functions-admin.php';
 }
 
 /**
  * Require actions and filters.
  */
-require_once( DFRCS_PATH . 'includes/actions.php' );
-require_once( DFRCS_PATH . 'includes/filters.php' );
+require_once dirname( DFRCS_PLUGIN_FILE ) . '/includes/actions.php';
+require_once dirname( DFRCS_PLUGIN_FILE ) . '/includes/filters.php';
 
 /**
  * Do initial set up.
