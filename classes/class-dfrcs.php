@@ -1325,9 +1325,18 @@ class Dfrcs {
 					'value'    => $v,
 				);
 
-			} elseif ( 'currency' == $k ) {
+			} elseif ( 'currency' === $k ) {
 
 				// Handle currency field.
+				$request[] = array(
+					'field'    => $k,
+					'operator' => 'is',
+					'value'    => $v,
+				);
+
+			} elseif ( in_array( $k, [ 'merchant_id', 'source_id' ] ) ) {
+
+				// Handle merchant_id and source_id fields.
 				$request[] = array(
 					'field'    => $k,
 					'operator' => 'is',

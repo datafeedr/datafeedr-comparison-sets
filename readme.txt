@@ -8,7 +8,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 7.4
 Requires at least: 3.8
 Tested up to: 6.0-alpha
-Stable tag: 0.9.58
+Stable tag: 0.9.59
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
@@ -103,13 +103,15 @@ saleprice_min
 saleprice_max
 finalprice_min
 finalprice_max
+merchant_id
+source_id
 `
 
 Here is what each filter controls:
 
 `
 // Return only products which are priced in USD.
-​currency=USD
+currency=USD
 
 // Return Amazon products from US Locale.
 amazon_locale=US
@@ -134,7 +136,15 @@ finalprice_min=20
 
 // Return only products with a maximum final price of $200.
 finalprice_max=200
+
+// Return only products from merchants with specific Merchant IDs (merchant_id).
+merchant_id=61316,33092,97391
+
+// Return only products from networks with specific Network IDs (source_id).
+source_id=126,3
 `
+
+Merchant IDs `merchant_id` (MID) and Network IDs `source_id` (NID) can be referenced on our [Affiliate Networks & Merchants page](https://datafeedr.me/networks).
 
 Here are some examples of how to use these filters in your shortcodes:
 
@@ -168,6 +178,12 @@ Create a price comparison set using an UPC code:
 [dfrcs upc="050946872827"]
 `
 
+Create a price comparison set limited to specific merchants and networks:
+
+`
+[dfrcs brand="patagonia" name="hoodie" filters="merchant_id=61316,33092,97391&source_id=126"]
+`
+
 Shortcode to use on WooCommerce **single product pages** (ie. in blocks, page builders, widgets, etc...)
 `
 [dfrcs_wc]
@@ -186,6 +202,9 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 3. This is the configuration page of the Datafeedr Comparison Sets plugin.
 
 == Changelog ==
+
+= 0.9.59 - 2022/03/24 =
+* Added support for `merchant_id` and `source_id` filters to be used in shortcodes.
 
 = 0.9.58 - 2022/03/14 =
 * Added option to disable using Amazon data in Comparison Set product search. Useful if Comparison Sets are returning inaccurate results.

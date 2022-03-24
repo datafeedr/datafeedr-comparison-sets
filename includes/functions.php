@@ -918,6 +918,8 @@ function dfrcs_valid_filters() {
 		'saleprice_max',
 		'finalprice_min',
 		'finalprice_max',
+		'merchant_id',
+		'source_id',
 	);
 
 	return apply_filters( 'dfrcs_valid_filters', $filters );
