@@ -117,7 +117,7 @@ function dfrcs_register_settings() {
 	add_settings_field( 'dfrcs_amazon_disclaimer_message_setting', 'Disclaimer Message', 'dfrcs_amazon_disclaimer_message_setting', 'dfrcs_options', 'dfrcs_options_amazon' );
 	add_settings_field( 'dfrcs_amazon_disclaimer_anchor_setting', 'More Info Link', 'dfrcs_amazon_disclaimer_anchor_setting', 'dfrcs_options', 'dfrcs_options_amazon' );
 	add_settings_field( 'dfrcs_amazon_disclaimer_date_format_setting', 'Date Format', 'dfrcs_amazon_disclaimer_date_format_setting', 'dfrcs_options', 'dfrcs_options_amazon' );
-	add_settings_field( 'dfrcs_amazon_disclaimer_timezone_format_setting', 'Date Format', 'dfrcs_amazon_disclaimer_timezone_format_setting', 'dfrcs_options', 'dfrcs_options_amazon' );
+	add_settings_field( 'dfrcs_amazon_disclaimer_timezone_format_setting', 'Date Timezone', 'dfrcs_amazon_disclaimer_timezone_format_setting', 'dfrcs_options', 'dfrcs_options_amazon' );
 }
 
 /**

@@ -34,145 +34,200 @@ add_filter( 'debug_information', function ( $info ) {
 		'label'       => __( 'Datafeedr Comparison Sets Plugin', 'datafeedr-comparison-sets' ),
 		'description' => '',
 		'fields'      => [
-			'total_compsets'               => [
+			'total_compsets'                    => [
 				'label' => __( 'Total Comparison Sets', 'datafeedr-comparison-sets' ),
 				'value' => $total_compsets,
 				'debug' => $total_compsets,
 			],
-			'prune_compsets_cron_job_days' => [
+			'prune_compsets_cron_job_days'      => [
 				'label' => __( 'Sets Considered Old After', 'datafeedr-comparison-sets' ),
 				'value' => $days . ' ' . __( 'days', 'datafeedr-comparison-sets' ),
 				'debug' => $days,
 			],
-			'total_old_compsets'           => [
+			'total_old_compsets'                => [
 				'label' => __( 'Total Number of Old Sets', 'datafeedr-comparison-sets' ),
 				'value' => $total_old_compsets,
 				'debug' => $total_old_compsets,
 			],
-			'cache_lifetime'               => [
+			'cache_lifetime'                    => [
 				'label' => __( 'Cache Lifetime', 'datafeedr-comparison-sets' ),
 				'value' => dfrcs_get_option( 'cache_lifetime' ),
 				'debug' => dfrcs_get_option( 'cache_lifetime' ),
 			],
-			'max_api_requests'             => [
+			'max_api_requests'                  => [
 				'label' => __( 'Max. API Requests per Set', 'datafeedr-comparison-sets' ),
 				'value' => dfrcs_get_option( 'max_api_requests' ),
 				'debug' => dfrcs_get_option( 'max_api_requests' ),
 			],
-			'integrations'                 => [
+			'integrations'                      => [
 				'label' => __( 'Integrations', 'datafeedr-comparison-sets' ),
 				'value' => implode( ', ', dfrcs_get_option( 'integrations' ) ),
 				'debug' => implode( ', ', dfrcs_get_option( 'integrations' ) ),
 			],
-			'prune_records'                => [
+			'prune_records'                     => [
 				'label' => __( 'Delete Old Sets', 'datafeedr-comparison-sets' ),
 				'value' => dfrcs_get_option( 'prune_records' ) == '1' ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
 				'debug' => dfrcs_get_option( 'prune_records' ),
 			],
-			'display_method'               => [
+			'display_method'                    => [
 				'label' => __( 'Display Method', 'datafeedr-comparison-sets' ),
-				'value' => dfrcs_get_option( 'display_method' ) == 'data' ? __( 'AJAX', 'datafeedr-comparison-sets' ) : __( 'PHP', 'datafeedr-comparison-sets' ),
+				'value' => dfrcs_get_option( 'display_method' ) === 'data' ? __( 'AJAX', 'datafeedr-comparison-sets' ) : __( 'PHP', 'datafeedr-comparison-sets' ),
 				'debug' => dfrcs_get_option( 'display_method' ),
 			],
-			'minimum_num_products'         => [
+			'minimum_num_products'              => [
 				'label' => __( 'Minimum Number of Results', 'datafeedr-comparison-sets' ),
 				'value' => dfrcs_get_option( 'minimum_num_products' ),
 				'debug' => dfrcs_get_option( 'minimum_num_products' ),
 			],
-			'display_last_updated'         => [
+			'display_last_updated'              => [
 				'label' => __( 'Display "Last Updated"', 'datafeedr-comparison-sets' ),
 				'value' => dfrcs_get_option( 'display_last_updated' ) == '1' ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
 				'debug' => dfrcs_get_option( 'display_last_updated' ),
 			],
-			'include_master_product'       => [
+			'include_master_product'            => [
 				'label' => __( 'Include Master in Results', 'datafeedr-comparison-sets' ),
 				'value' => dfrcs_get_option( 'include_master_product' ) == '1' ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
 				'debug' => dfrcs_get_option( 'include_master_product' ),
 			],
-			'title'                        => [
+			'title'                             => [
 				'label' => __( 'Comparison Set Title', 'datafeedr-comparison-sets' ),
 				'value' => dfrcs_get_option( 'title' ),
 				'debug' => dfrcs_get_option( 'title' ),
 			],
-			'link_text'                    => [
+			'link_text'                         => [
 				'label' => __( 'Button Text', 'datafeedr-comparison-sets' ),
 				'value' => dfrcs_get_option( 'link_text' ),
 				'debug' => dfrcs_get_option( 'link_text' ),
 			],
-			'loading_text'                 => [
+			'loading_text'                      => [
 				'label' => __( 'Loading Text', 'datafeedr-comparison-sets' ),
 				'value' => dfrcs_get_option( 'loading_text' ),
 				'debug' => dfrcs_get_option( 'loading_text' ),
 			],
-			'min_viewing_cap'              => [
+			'min_viewing_cap'                   => [
 				'label' => __( 'Minimum Viewing Role', 'datafeedr-comparison-sets' ),
 				'value' => $min_viewing_cap_display,
 				'debug' => $min_viewing_cap_display,
 			],
-			'debug_fields'                 => [
+			'debug_fields'                      => [
 				'label' => __( 'Debug Fields', 'datafeedr-comparison-sets' ),
 				'value' => implode( ', ', dfrcs_get_option( 'debug_fields' ) ),
 				'debug' => implode( ', ', dfrcs_get_option( 'debug_fields' ) ),
 			],
-			'no_results_message'           => [
+			'no_results_message'                => [
 				'label' => __( 'No Results Message', 'datafeedr-comparison-sets' ),
 				'value' => dfrcs_get_option( 'no_results_message' ),
 				'debug' => dfrcs_get_option( 'no_results_message' ),
 			],
-			'used_label'                   => [
+			'used_label'                        => [
 				'label' => __( 'Used Label', 'datafeedr-comparison-sets' ),
 				'value' => dfrcs_get_option( 'used_label' ),
 				'debug' => dfrcs_get_option( 'used_label' ),
 			],
-			'query_by_amazon'              => [
+			'display_image'                     => [
+				'label' => __( 'Display Image', 'datafeedr-comparison-sets' ),
+				'value' => absint( dfrcs_get_option( 'display_image' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
+				'debug' => absint( dfrcs_get_option( 'display_image' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
+			],
+			'display_logo'                      => [
+				'label' => __( 'Display Logo', 'datafeedr-comparison-sets' ),
+				'value' => absint( dfrcs_get_option( 'display_logo' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
+				'debug' => absint( dfrcs_get_option( 'display_logo' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
+			],
+			'display_price'                     => [
+				'label' => __( 'Display Price', 'datafeedr-comparison-sets' ),
+				'value' => absint( dfrcs_get_option( 'display_price' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
+				'debug' => absint( dfrcs_get_option( 'display_price' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
+			],
+			'display_button'                    => [
+				'label' => __( 'Display Button', 'datafeedr-comparison-sets' ),
+				'value' => absint( dfrcs_get_option( 'display_button' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
+				'debug' => absint( dfrcs_get_option( 'display_button' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
+			],
+			'display_promo'                     => [
+				'label' => __( 'Display Promo', 'datafeedr-comparison-sets' ),
+				'value' => absint( dfrcs_get_option( 'display_promo' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
+				'debug' => absint( dfrcs_get_option( 'display_promo' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
+			],
+			'query_by_amazon'                   => [
 				'label' => __( 'Query Amazon', 'datafeedr-comparison-sets' ),
-				'value' => dfrcs_get_option( 'query_by_amazon' ) == '1' ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
-				'debug' => dfrcs_get_option( 'query_by_amazon' ),
+				'value' => absint( dfrcs_get_option( 'query_by_amazon' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
+				'debug' => absint( dfrcs_get_option( 'query_by_amazon' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
 			],
-			'query_by_name'                => [
+			'query_by_name'                     => [
 				'label' => __( 'Query by Product Name', 'datafeedr-comparison-sets' ),
-				'value' => dfrcs_get_option( 'query_by_name' ) == '1' ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
-				'debug' => dfrcs_get_option( 'query_by_name' ),
+				'value' => absint( dfrcs_get_option( 'query_by_name' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
+				'debug' => absint( dfrcs_get_option( 'query_by_name' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
 			],
-			'query_by_model'               => [
+			'query_by_model'                    => [
 				'label' => __( 'Query by Model Number', 'datafeedr-comparison-sets' ),
-				'value' => dfrcs_get_option( 'query_by_model' ) == '1' ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
-				'debug' => dfrcs_get_option( 'query_by_model' ),
+				'value' => absint( dfrcs_get_option( 'query_by_model' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
+				'debug' => absint( dfrcs_get_option( 'query_by_model' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
 			],
-			'query_by_barcodes'            => [
+			'query_by_barcodes'                 => [
 				'label' => __( 'Query by Barcodes', 'datafeedr-comparison-sets' ),
-				'value' => dfrcs_get_option( 'query_by_barcodes' ) == '1' ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
-				'debug' => dfrcs_get_option( 'query_by_barcodes' ),
+				'value' => absint( dfrcs_get_option( 'query_by_barcodes' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
+				'debug' => absint( dfrcs_get_option( 'query_by_barcodes' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
 			],
-			'keyword_accuracy'             => [
+			'keyword_accuracy'                  => [
 				'label' => __( 'Keyword Accuracy', 'datafeedr-comparison-sets' ),
 				'value' => dfrcs_get_option( 'keyword_accuracy' ),
 				'debug' => dfrcs_get_option( 'keyword_accuracy' ),
 			],
-			'exclude_duplicate_fields'     => [
+			'use_amazon_data_in_search'         => [
+				'label' => __( 'Use Amazon Data', 'datafeedr-comparison-sets' ),
+				'value' => absint( dfrcs_get_option( 'use_amazon_data_in_search' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
+				'debug' => absint( dfrcs_get_option( 'use_amazon_data_in_search' ) ) === 1 ? __( 'Yes', 'datafeedr-comparison-sets' ) : __( 'No', 'datafeedr-comparison-sets' ),
+			],
+			'exclude_duplicate_fields'          => [
 				'label' => __( 'Exclude Duplicates Fields', 'datafeedr-comparison-sets' ),
 				'value' => implode( ', ', dfrcs_get_option( 'exclude_duplicate_fields' ) ),
 				'debug' => implode( ', ', dfrcs_get_option( 'exclude_duplicate_fields' ) ),
 			],
-			'barcode_fields'               => [
+			'barcode_fields'                    => [
 				'label' => __( 'Barcode Fields', 'datafeedr-comparison-sets' ),
 				'value' => implode( ', ', dfrcs_get_option( 'barcode_fields' ) ),
 				'debug' => implode( ', ', dfrcs_get_option( 'barcode_fields' ) ),
 			],
-			'brand_name_stopwords'         => [
+			'brand_name_stopwords'              => [
 				'label' => __( 'Brand Name Stopwords', 'datafeedr-comparison-sets' ),
 				'value' => implode( ', ', dfrcs_get_option( 'brand_name_stopwords' ) ),
 				'debug' => implode( ', ', dfrcs_get_option( 'brand_name_stopwords' ) ),
 			],
-			'mandatory_keywords'           => [
+			'mandatory_keywords'                => [
 				'label' => __( 'Mandatory Keywords', 'datafeedr-comparison-sets' ),
 				'value' => implode( ', ', dfrcs_get_option( 'mandatory_keywords' ) ),
 				'debug' => implode( ', ', dfrcs_get_option( 'mandatory_keywords' ) ),
 			],
-			'product_name_stopwords'       => [
+			'product_name_stopwords'            => [
 				'label' => __( 'Product Name Stopwords', 'datafeedr-comparison-sets' ),
 				'value' => implode( ', ', dfrcs_get_option( 'product_name_stopwords' ) ),
 				'debug' => implode( ', ', dfrcs_get_option( 'product_name_stopwords' ) ),
+			],
+			'amazon_disclaimer_title'           => [
+				'label' => __( 'Amazon Disclaimer Title', 'datafeedr-comparison-sets' ),
+				'value' => dfrcs_get_option( 'amazon_disclaimer_title' ),
+				'debug' => dfrcs_get_option( 'amazon_disclaimer_title' ),
+			],
+			'amazon_disclaimer_message'         => [
+				'label' => __( 'Amazon Disclaimer Message', 'datafeedr-comparison-sets' ),
+				'value' => dfrcs_get_option( 'amazon_disclaimer_message' ),
+				'debug' => dfrcs_get_option( 'amazon_disclaimer_message' ),
+			],
+			'amazon_disclaimer_anchor'          => [
+				'label' => __( 'Amazon More Info Link', 'datafeedr-comparison-sets' ),
+				'value' => dfrcs_get_option( 'amazon_disclaimer_anchor' ),
+				'debug' => dfrcs_get_option( 'amazon_disclaimer_anchor' ),
+			],
+			'amazon_disclaimer_date_format'     => [
+				'label' => __( 'Amazon Date Format', 'datafeedr-comparison-sets' ),
+				'value' => dfrcs_get_option( 'amazon_disclaimer_date_format' ),
+				'debug' => dfrcs_get_option( 'amazon_disclaimer_date_format' ),
+			],
+			'amazon_disclaimer_timezone_format' => [
+				'label' => __( 'Amazon Date Timezone', 'datafeedr-comparison-sets' ),
+				'value' => dfrcs_get_option( 'amazon_disclaimer_timezone_format' ),
+				'debug' => dfrcs_get_option( 'amazon_disclaimer_timezone_format' ),
 			],
 		]
 	];
