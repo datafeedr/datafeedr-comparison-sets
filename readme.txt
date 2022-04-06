@@ -8,7 +8,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 7.4
 Requires at least: 3.8
 Tested up to: 6.0-alpha
-Stable tag: 0.9.59
+Stable tag: 0.9.60
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
@@ -202,6 +202,22 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 3. This is the configuration page of the Datafeedr Comparison Sets plugin.
 
 == Changelog ==
+
+= 0.9.60 - 2022/04/06 =
+* Changed "Date Format" label to "Date Timezone"
+* Changed some site health info options to use absint() === 1 instead of less strict
+* Added the following site health info items:
+* Display Image
+* Display Logo
+* Display Price
+* Display Button
+* Display Promo
+* Use Amazon Data
+* Amazon Disclaimer Title
+* Amazon Disclaimer Message
+* Amazon Disclaimer More Info Link
+* Amazon Date Format
+* Amazon Date Timezone
 
 = 0.9.59 - 2022/03/24 =
 * Added support for `merchant_id` and `source_id` filters to be used in shortcodes.
