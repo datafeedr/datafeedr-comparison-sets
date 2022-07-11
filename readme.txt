@@ -7,8 +7,8 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 7.4
 Requires at least: 3.8
-Tested up to: 6.0-alpha
-Stable tag: 0.9.60
+Tested up to: 6.0.1-RC1
+Stable tag: 0.9.61
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
@@ -16,7 +16,9 @@ Automatically create price comparison sets for your WooCommerce products or by u
 
 The Datafeedr Comparison Set plugin automatically creates price comparison sets for any product in your WooCommerce store or by using a shortcode.
 
-> **Heads-up!** — This plugin requires that you have an active subscription to one of our API plans. Purchase a subscription [here](https://members.datafeedr.com/subscribe/api?utm_campaign=dfrapiplugin&utm_medium=referral&utm_source=wporg).
+> **Heads-up!** — This plugin requires that you have an active subscription to one of our API plans. [Purchase Subscription](https://datafeedr.me/pricing).
+
+*For personal-use only. Please contact us if you have any questions.*
 
 **Requirements**
 
@@ -28,7 +30,7 @@ The Datafeedr Comparison Set plugin automatically creates price comparison sets 
 
 = API Usage =
 
-Please know that the generating or updating of a single comparison set will require between 2 and 6 API requests. If you are using the API **Starter Plan**, consider [upgrading](https://members.datafeedr.com/api?utm_campaign=dfrapiplugin&utm_medium=referral&utm_source=wporg) to the **Basic Plan**.
+Please know that the generating or updating of a single comparison set will require between 2 and 6 API requests. If you are using the API **Starter Plan**, consider [upgrading](https://datafeedr.me/dashboard) to the **Basic Plan**.
 
 = Installation & Configuration =
 
@@ -38,7 +40,7 @@ Please know that the generating or updating of a single comparison set will requ
 
 = API Usage =
 
-Please know that the generating or updating of a single comparison set will require between 2 and 6 API requests. If you are using the API **Starter Plan**, consider [upgrading](https://members.datafeedr.com/api?utm_campaign=dfrapiplugin&utm_medium=referral&utm_source=wporg) to the **Basic Plan**.
+Please know that the generating or updating of a single comparison set will require between 2 and 6 API requests. If you are using the API **Starter Plan**, consider [upgrading](https://datafeedr.me/dashboard) to the **Basic Plan**.
 
 = Plugin Installation =
 
@@ -202,6 +204,9 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 3. This is the configuration page of the Datafeedr Comparison Sets plugin.
 
 == Changelog ==
+
+= 0.9.61 - 2022/07/11 =
+* Updated readme and tested up to values.
 
 = 0.9.60 - 2022/04/06 =
 * Changed "Date Format" label to "Date Timezone"
