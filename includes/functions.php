@@ -1218,18 +1218,13 @@ function dfrcs_get_compset_product_field( Dfrcs $compset, $field, $select ) {
  * WooCommerce related functions
  *********************************/
 
-
 /**
- * Display compset on WooCommerce product page.
+ * Display Comparison Set on WooCommerce product page.
  *
- * This is called from the "woocommerce_after_single_product_summary" hook or
- * from the "dfrcs_wc" shortcode.
- *
- * Description.
+ * This is called from the "woocommerce_after_single_product_summary" hook.
  *
  * @return void
  * @since 0.9.0
- *
  */
 function dfrcs_wc_single_product_page_compset() {
 	$source = dfrcs_wc_get_source_of_product();
@@ -1237,8 +1232,6 @@ function dfrcs_wc_single_product_page_compset() {
 	$source['context'] = 'wc_single_product_page';
 	echo dfrcs_compset( $source );
 }
-
-add_shortcode( 'dfrcs_wc', 'dfrcs_wc_single_product_page_compset' );
 
 /**
  * @param WC_Product $product - This can only be a $product Object.

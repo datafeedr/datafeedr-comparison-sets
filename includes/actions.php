@@ -1050,8 +1050,8 @@ function dfrcs_options_validate( $input ) {
 	$newinput['product_name_stopwords'] = array_filter( array_unique( $newinput['product_name_stopwords'] ) );
 
 	// Amazon Disclaimer Title, Anchor and Message (all can be empty)
-	$newinput['amazon_disclaimer_title'] = trim( $input['amazon_disclaimer_title'] );
-	$newinput['amazon_disclaimer_anchor'] = trim( $input['amazon_disclaimer_anchor'] );
+	$newinput['amazon_disclaimer_title']   = trim( $input['amazon_disclaimer_title'] );
+	$newinput['amazon_disclaimer_anchor']  = trim( $input['amazon_disclaimer_anchor'] );
 	$newinput['amazon_disclaimer_message'] = trim( $input['amazon_disclaimer_message'] );
 
 	// Amazon Disclaimer Date format
@@ -1521,7 +1521,6 @@ function dfrcs_add_product() {
  * [dfrcs name="Women’s Marmot Jena Vest" brand="Marmot" title="Best Prices for Jena Vest"]
  *
  */
-add_shortcode( 'dfrcs', 'dfrcs_shortcode' );
 function dfrcs_shortcode( $atts ) {
 
 	$post_type = ( $type = get_post_type() ) ? '_' . $type : '';
@@ -1536,6 +1535,27 @@ function dfrcs_shortcode( $atts ) {
 	return dfrcs_compset( $source );
 }
 
+add_shortcode( 'dfrcs', 'dfrcs_shortcode' );
+
+/**
+ * Displays Comparison Set on WooCommerce product page via a [dfrcs_wc] shortcode.
+ *
+ * This should be used when using builders like Elementor and default WooCommerce hooks such as
+ * woocommerce_after_single_product_summary are unavailable.
+ *
+ * @since 0.9.62
+ *
+ * @return string
+ */
+function dfrcs_wc_shortcode(): string {
+	$source = dfrcs_wc_get_source_of_product();
+
+	$source['context'] = 'wc_single_product_page';
+
+	return dfrcs_compset( $source );
+}
+
+add_shortcode( 'dfrcs_wc', 'dfrcs_wc_shortcode' );
 
 /**
  * Add debug CSS and JS script to head.
