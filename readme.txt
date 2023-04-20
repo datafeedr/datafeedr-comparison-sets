@@ -8,7 +8,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 7.4
 Requires at least: 3.8
 Tested up to: 6.2.1-alpha
-Stable tag: 0.9.65
+Stable tag: 0.9.66
 
 Automatically create price comparison sets for your WooCommerce products or by using a shortcode.
 
@@ -205,7 +205,7 @@ Feel free to contact us [here](https://datafeedrapi.helpscoutdocs.com/contact?ut
 
 == Changelog ==
 
-= 0.9.65 - 2023/04/20 =
+= 0.9.66 - 2023/04/20 =
 * Filter out products that are no longer available in the API.
 
 = 0.9.63 - 2022/10/28 =
