@@ -341,7 +341,7 @@ class Dfrcs {
 
 		$filtered_products = $all_products = $this->products;
 
-		// Added in 0.9.64
+		// Added in 0.9.65
 		foreach ( $filtered_products as $key => $product ) {
 			if ( ! isset( $product['merchant_id'] ) || ! isset( $product['source_id'] ) ) {
 				unset( $filtered_products[ $key ] );
