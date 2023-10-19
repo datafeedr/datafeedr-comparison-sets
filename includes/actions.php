@@ -1235,10 +1235,32 @@ function dfrcs_output_compset_ajax() {
 	check_ajax_referer( 'dfrcs_ajax_nonce', 'dfrcs_security' );
 
 	$request = $_REQUEST;
-	$source  = $request['source'];
-	$source  = base64_decode( $source );
-	$source  = unserialize( $source );
 
+	$request_source  = $request['source'];
+	$request_source  = base64_decode( $request_source );
+	$request_source = unserialize( $request_source, [ 'allowed_classes' => false, 'max_depth' => 1 ] );
+
+	// Ensure that $request_source is an array. Die if not an array.
+	if ( ! is_array( $request_source ) ) {
+		die();
+	}
+
+	$source = [];
+
+	// Sanitize data returned
+	foreach ( $request_source as $k => $v ) {
+		$source[ sanitize_text_field( $k ) ] = sanitize_text_field( $v );
+	}
+
+	/**
+	 * $source will look something like this:
+	 *
+	 *  Array (
+	 *      [id] => 2173400008798575
+	 *      [post_id] => 338
+	 *      [context] => wc_single_product_page
+	 *  )
+	 */
 	$source['display_method'] = 'ajax';
 
 	$html = dfrcs_compset( $source );
@@ -1262,7 +1284,12 @@ function dfrcs_refresh_compset_ajax() {
 
 	$source = $request['source'];
 	$source = base64_decode( $source );
-	$source = unserialize( $source );
+	$source = unserialize( $source, [ 'allowed_classes' => false, 'max_depth' => 1 ] );
+
+	// Ensure that $source is an array. Die if not an array.
+	if ( ! is_array( $source ) ) {
+		die();
+	}
 
 	$source['display_method'] = 'ajax';
 

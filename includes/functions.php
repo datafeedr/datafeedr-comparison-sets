@@ -233,7 +233,9 @@ function dfrcs_title() {
 		$msg       = '<span title="' . esc_attr( $admin_tip ) . '"> ' . __( '[HIDDEN]', DFRCS_DOMAIN ) . '</span>';
 	}
 
-	return apply_filters( 'dfrcs_title', str_replace( $s, $r, $compset->args['title'] ), $compset ) . $msg;
+	$title = apply_filters( 'dfrcs_title', str_replace( $s, $r, $compset->args['title'] ), $compset );
+
+	return esc_html( $title ) . $msg;
 }
 
 function dfrcs_image( $product = array() ) {
@@ -759,6 +761,10 @@ function dfrcs_refresh_compset( $hash ) {
 		return;
 	}
 
+	if ( ! dfrcs_is_valid_md5( $hash ) ) {
+		return;
+	}
+
 	global $wpdb;
 
 	$updated = '1970-01-01 00:00:00';
@@ -779,7 +785,8 @@ function dfrcs_select( $hash ) {
 	global $wpdb;
 
 	$hash = trim( $hash );
-	if ( empty( $hash ) ) {
+
+	if ( ! dfrcs_is_valid_md5( $hash ) ) {
 		return false;
 	}
 
@@ -798,8 +805,9 @@ function dfrcs_update_last_query( $hash, $query ) {
 	global $wpdb;
 
 	$hash = trim( $hash );
-	if ( empty( $hash ) ) {
-		return false;
+
+	if ( ! dfrcs_is_valid_md5( $hash ) ) {
+		return;
 	}
 
 	$table = $wpdb->prefix . DFRCS_TABLE;
@@ -824,6 +832,12 @@ function dfrcs_display_search_results( $products, $hash ) {
 
 	if ( empty( $hash ) ) {
 		_e( 'Missing comparison set hash.', DFRCS_DOMAIN );
+
+		return;
+	}
+
+	if ( ! dfrcs_is_valid_md5( $hash ) ) {
+		_e( 'Invalid hash.', DFRCS_DOMAIN );
 
 		return;
 	}
@@ -1385,4 +1399,17 @@ function dfrcs_display_promo(): bool {
  */
 function dfrcs_use_amazon_data_in_search(): bool {
 	return (bool) dfrcs_get_option( 'use_amazon_data_in_search' );
+}
+
+/**
+ * Validates the validity of an MD5 hash.
+ *
+ * @see https://stackoverflow.com/a/14300703
+ *
+ * @param string $md5
+ *
+ * @return bool
+ */
+function dfrcs_is_valid_md5( string $md5 = '' ): bool {
+	return boolval( preg_match( '/^[a-f0-9]{32}$/', $md5 ) );
 }
