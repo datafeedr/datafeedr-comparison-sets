@@ -1094,28 +1094,28 @@ function dfrcs_add_products_output() {
 
 	?>
 
-    <div id="dfrcs_search_form_wrapper" class="stuffbox">
+	<div id="dfrcs_search_form_wrapper" class="stuffbox">
 
-        <p><strong><?php _e( 'Search for products to add to this comparison set.', DFRCS_DOMAIN ); ?></strong></p>
+		<p><strong><?php _e( 'Search for products to add to this comparison set.', DFRCS_DOMAIN ); ?></strong></p>
 
-        <form>
+		<form>
 			<?php
 			$sform = new Dfrapi_SearchForm();
 			echo $sform->render( '_dfrcs_query', $last_query );
 			?>
-        </form>
+		</form>
 
-        <div class="actions">
+		<div class="actions">
 			<span class="dfrcs_raw_query">
 				<a href="#" id="dfrcs_view_raw_query"><?php _e( 'view api request', DFRCS_DOMAIN ); ?></a>
 			</span>
-            <input type="hidden" name="dfrcs_hash" id="dfrcs_hash" value="<?php echo $hash; ?>"/>
-            <input name="search" type="submit" class="button" id="dfrcs_search"
-                   value="<?php echo __( 'Search', DFRCS_DOMAIN ); ?>"/>
-        </div>
-        <div id="div_dfrcs_search_results"></div>
+			<input type="hidden" name="dfrcs_hash" id="dfrcs_hash" value="<?php echo $hash; ?>"/>
+			<input name="search" type="submit" class="button" id="dfrcs_search"
+			       value="<?php echo __( 'Search', DFRCS_DOMAIN ); ?>"/>
+		</div>
+		<div id="div_dfrcs_search_results"></div>
 
-    </div>
+	</div>
 	<?php
 }
 
@@ -1125,7 +1125,7 @@ function dfrcs_add_products_output() {
 add_action( 'admin_head', 'dfrcs_hide_admin_interface' );
 function dfrcs_hide_admin_interface() {
 	if ( isset( $_GET['page'] ) && ( 'dfrcs_add_products' == $_GET['page'] ) ) { ?>
-        <style type="text/css">
+		<style type="text/css">
             html,
             html.wp-toolbar,
             #wpbody,
@@ -1140,15 +1140,15 @@ function dfrcs_hide_admin_interface() {
                 box-shadow: none;
             }
 
-        </style>
-        <script type="text/javascript">
+		</style>
+		<script type="text/javascript">
             jQuery(document).ready(function ($) {
                 $("#wpwrap > #adminmenumain").remove();
                 $("#wpwrap > #wpcontent > #wpadminbar").remove();
                 $("#wpbody-content > #dfrcs_search_form_wrapper").prevAll().remove();
                 $("#wpwrap > #wpfooter").remove();
             });
-        </script>
+		</script>
 		<?php
 	}
 }
@@ -1236,13 +1236,36 @@ function dfrcs_output_compset_ajax() {
 
 	$request = $_REQUEST;
 
-	$request_source  = $request['source'];
-	$request_source  = base64_decode( $request_source );
+	$request_source = $request['source'];
+	$request_source = base64_decode( $request_source );
 	$request_source = unserialize( $request_source, [ 'allowed_classes' => false, 'max_depth' => 1 ] );
 
 	// Ensure that $request_source is an array. Die if not an array.
 	if ( ! is_array( $request_source ) ) {
 		die();
+	}
+
+	// Get post_id
+	// Validate that it exists
+	// If added via shortcode
+
+	error_log( 'get_the_ID()' . ': ' . print_r( get_the_ID(), true ) );
+
+	error_log( '$request_source' . ': ' . print_r( $request_source, true ) );
+
+	// Validate that if this was added via a shortcode, the shortcode exists in the post.
+	if ( $request_source['post_id'] ) {
+		$post = get_post( $request_source['post_id'] );
+		if ( $post->post_type !== 'product' ) {
+			// @todo what to do if post is not a WooCommerce product?
+			if ( dfrcs_shortcode_exists_in_post( $post, $request['source'] ) === false ) {
+				die();
+			}
+		} else {
+			// @todo what to do if post is a WooCommerce product?
+		}
+	} else {
+		// @todo What to do if a post_id is not present?
 	}
 
 	$source = [];
@@ -1251,6 +1274,7 @@ function dfrcs_output_compset_ajax() {
 	foreach ( $request_source as $k => $v ) {
 		$source[ sanitize_text_field( $k ) ] = sanitize_text_field( $v );
 	}
+
 
 	/**
 	 * $source will look something like this:
@@ -1575,6 +1599,12 @@ add_shortcode( 'dfrcs', 'dfrcs_shortcode' );
  * @return string
  */
 function dfrcs_wc_shortcode(): string {
+
+	// Prevent shortcode from rendering in the WordPress Admin Area.
+	if ( is_admin() ) {
+		return '';
+	}
+
 	$source = dfrcs_wc_get_source_of_product();
 
 	$source['context'] = 'wc_single_product_page';

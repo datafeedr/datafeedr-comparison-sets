@@ -1413,3 +1413,207 @@ function dfrcs_use_amazon_data_in_search(): bool {
 function dfrcs_is_valid_md5( string $md5 = '' ): bool {
 	return boolval( preg_match( '/^[a-f0-9]{32}$/', $md5 ) );
 }
+
+/**
+ * Checks if the requested $encoded_source actually exists in the current $post.
+ *
+ * @since 0.9.68
+ *
+ * @param string $encoded_source Example: YToxOntzOjc6InBvc3RfaWQiO2k6MTIzO30=
+ *
+ * @param WP_Post $post
+ *
+ * @return bool True if shortcode exists in post, otherwise false.
+ */
+function dfrcs_shortcode_exists_in_post( WP_Post $post, string $encoded_source ): bool {
+
+	$ignored_fields = [ 'title' ];
+
+	$requested_shortcode = dfrcs_decode_source( $encoded_source );
+
+	foreach ( $ignored_fields as $ignored_field ) {
+		unset( $requested_shortcode[ $ignored_field ] );
+	}
+
+	$encoded_requested_shortcode = dfrcs_encode_source( $requested_shortcode );
+
+	$encoded_post_shortcodes = dfrcs_get_all_shortcodes_from_post( $post, $ignored_fields );
+
+	return in_array( $encoded_requested_shortcode, $encoded_post_shortcodes, true );
+}
+
+/**
+ * Gets all [dfrcs] shortcodes from a $post's content as an array in either an encoded or un-encoded format.
+ *
+ * @since 0.9.68
+ *
+ * @param WP_Post $post
+ * @param array $ignored_fields Fields to remove from attribute array
+ * @param bool $encoded Whether to return the base64 encoded attribute array or just the strings.
+ *
+ * @return array An array of shortcode attribute strings or an array of encoded shortcode attributes.
+ */
+function dfrcs_get_all_shortcodes_from_post( WP_Post $post, array $ignored_fields = [ 'title' ], bool $encoded = true ): array {
+
+	// This will get prepended to the attribute array.
+	$default_attributes = [
+		'context' => 'shortcode_' . $post->post_type,
+		'post_id' => $post->ID
+	];
+
+	// Extract all shortcodes from post's content.
+	$shortcode_attribute_strings = dfrcs_extract_shortcodes_from_content( $post->post_content );
+
+	// If there are no shortcodes, then return false.
+	if ( empty( $shortcode_attribute_strings ) ) {
+		return [];
+	}
+
+	// Trim all shortcode attribute strings
+	$shortcode_attribute_strings = array_map( 'trim', $shortcode_attribute_strings );
+
+	$shortcode_attributes = [];
+
+	/**
+	 * Loop through each string returned by dfrcs_extract_shortcodes_from_content() and
+	 * check remove $ignored_fields and merge with $default_attributes.
+	 */
+	foreach ( $shortcode_attribute_strings as $shortcode_attribute_string ) {
+
+		/**
+		 * If attribute string is empty, that means an empty [dfrcs] tag was found.
+		 * We should ignore empty [dfrcs] tags.
+		 */
+		if ( empty( $shortcode_attribute_string ) ) {
+			continue;
+		}
+
+		/**
+		 * This converts the string of attributes to an array. For example, the array that might be returned
+		 * could look like this:
+		 *
+		 *  [
+		 *      "name" => "Petzl Tikka headlamp",
+		 *      "brand" => "petzl",
+		 *      "title" => "{num_products} great <h2>deals</h2> on whatever!",
+		 *      "filters" => "currency=USD&finalprice_min=20&merchant_id=21731,61317",
+		 *  ]
+		 */
+		$attributes = shortcode_parse_atts( $shortcode_attribute_string );
+
+		// Remove fields which we don't want to compare.
+		foreach ( $ignored_fields as $ignored_field ) {
+			unset( $attributes[ $ignored_field ] );
+		}
+
+		// Merge new array with default attributes. Prepend $attributes with $default_attributes.
+		$shortcode_attributes[] = array_merge( $default_attributes, $attributes );
+	}
+
+	// If request was for un-encoded shortcode attributes, return now.
+	if ( ! $encoded ) {
+
+		/**
+		 * If un-encoded array was requested, the returned array might look like this:
+		 *
+		 *  [
+		 *      [
+		 *          "context" => "shortcode_post",
+		 *          "post_id" => 4455,
+		 *          "name" => "Petzl Tikka headlamp",
+		 *          "brand" => "petzl",
+		 *          "filters" => "currency=USD&finalprice_min=20&merchant_id=21731,61317",
+		 *      ],
+		 *      [
+		 *          "context" => "shortcode_post",
+		 *          "post_id" => 4455,
+		 *          "name" => "Petzl climbing harness",
+		 *          "brand" => "petzl",
+		 *          "filters" => "currency=USD&finalprice_min=20&merchant_id=21731,61317",
+		 *      ],
+		 *  ]
+		 */
+
+		return $shortcode_attributes;
+	}
+
+	$encoded_shortcodes = [];
+
+	foreach ( $shortcode_attributes as $shortcode_attribute ) {
+		$encoded_shortcodes[] = dfrcs_encode_source( $shortcode_attribute );
+	}
+
+	/**
+	 * If we made it this far, this means an encoded version of the shortcodes was request so that result
+	 * might look like this:
+	 *
+	 *  [
+	 *      "YTo1OntzOjc6ImNvbnRleHQiO3M6MTQ6InNob3J0Y29kZV9wb3N0IjtzOjc6InBvc3RfaWQiO2k6NDQ1NTtzOjQ6Im5hbWUiO3M6MjA6IlBldHpsIFRpa2thIGhlYWRsYW1wIjtzOjU6ImJyYW5kIjtzOjU6InBldHpsIjtzOjc6ImZpbHRlcnMiO3M6NTQ6ImN1cnJlbmN5PVVTRCZmaW5hbHByaWNlX21pbj0yMCZtZXJjaGFudF9pZD0yMTczMSw2MTMxNyI7fQ==",
+	 *      "YTo1OntzOjc6ImNvbnRleHQiO3M6MTQ6InNob3J0Y29kZV9wb3N0IjtzOjc6InBvc3RfaWQiO2k6NDQ1NTtzOjQ6Im5hbWUiO3M6MjI6IlBldHpsIGNsaW1iaW5nIGhhcm5lc3MiO3M6NToiYnJhbmQiO3M6NToicGV0emwiO3M6NzoiZmlsdGVycyI7czo1NDoiY3VycmVuY3k9VVNEJmZpbmFscHJpY2VfbWluPTIwJm1lcmNoYW50X2lkPTIxNzMxLDYxMzE3Ijt9",
+	 *  ]
+	 */
+	return $encoded_shortcodes;
+}
+
+/**
+ * Serializes and base64 encodes an array.
+ *
+ * @since 0.9.68
+ *
+ * @param array $attributes
+ *
+ * @return string
+ */
+function dfrcs_encode_source( array $attributes ): string {
+	return base64_encode( serialize( $attributes ) );
+}
+
+/**
+ * Base64 decodes a string (if encoded properly) then unserializes it.
+ *
+ * @since 0.9.68
+ *
+ * @param string $source
+ *
+ * @return array
+ */
+function dfrcs_decode_source( string $source ): array {
+
+	$decoded_source = base64_decode( $source, true );
+
+	if ( $decoded_source === false ) {
+		return [];
+	}
+
+	if ( ! is_serialized( $decoded_source ) ) {
+		return [];
+	}
+
+	return unserialize( $decoded_source, [
+		'allowed_classes' => false,
+		'max_depth'       => 1
+	] );
+}
+
+/**
+ * This returns an array of every [dfrcs] shortcode's attributes. For example, if a Post has 2 [dfrcs] shortcodes, this
+ * function will return an array like this:
+ *
+ *  [
+ *      " name="Petzl Tikka headlamp" brand="petzl" title="{num_products} great <h2>deals</h2> on whatever!" filters="currency=USD&finalprice_min=20&merchant_id=21731,61317"",
+ *      " name="Petzl climbing harness" brand="petzl" filters="currency=USD&finalprice_min=20&merchant_id=21731,61317"",
+ *  ]
+ *
+ * @since 0.9.68
+ *
+ * @param string $content The Post's content.
+ *
+ * @return array An array of shortcode attributes.
+ */
+function dfrcs_extract_shortcodes_from_content( string $content ): array {
+	if ( preg_match_all( '/\[dfrcs(.*?)\]/', $content, $shortcodes ) ) {
+		return array_key_exists( 1, $shortcodes ) ? $shortcodes[1] : [];
+	}
+
+	return [];
+}

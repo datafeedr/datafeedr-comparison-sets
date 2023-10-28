@@ -319,6 +319,7 @@ class Dfrcs {
 
 	private function set_encoded_source() {
 		$source               = $this->source->original;
+		error_log( 'set_encoded_source' . ': ' . print_r( $source, true ) );
 		$source               = serialize( $source );
 		$source               = base64_encode( $source );
 		$this->encoded_source = $source;
