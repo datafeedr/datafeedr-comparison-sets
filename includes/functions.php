@@ -1428,7 +1428,7 @@ function dfrcs_is_valid_md5( string $md5 = '' ): bool {
 function dfrcs_get_hash(): string {
 
 	$option = 'dfrcs_hash';
-	$hash = get_option( $option, false );
+	$hash   = get_option( $option, false );
 
 	if ( dfrcs_is_valid_md5( $hash ) ) {
 		return $hash;
@@ -1442,3 +1442,18 @@ function dfrcs_get_hash(): string {
 	return $hash;
 }
 
+/**
+ * Return a "signature" for the $data.
+ *
+ * @since 0.9.68
+ *
+ * @param string $data
+ *
+ * @return bool|string
+ */
+function dfrcs_hash_hmac( string $data ): bool|string {
+	$algo = 'sha256';
+	$key  = dfrcs_get_hash();
+
+	return hash_hmac( $algo, $data, $key );
+}

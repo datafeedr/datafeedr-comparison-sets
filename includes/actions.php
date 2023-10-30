@@ -1236,8 +1236,8 @@ function dfrcs_output_compset_ajax() {
 
 	$request = $_REQUEST;
 
-	$request_source  = $request['source'];
-	$request_source  = base64_decode( $request_source );
+	$request_source = $request['source'];
+	$request_source = base64_decode( $request_source );
 	$request_source = unserialize( $request_source, [ 'allowed_classes' => false, 'max_depth' => 1 ] );
 
 	// Ensure that $request_source is an array. Die if not an array.
@@ -1247,12 +1247,7 @@ function dfrcs_output_compset_ajax() {
 
 	$received_signature = $request_source['signature'];
 	unset( $request_source['signature'] );
-	$check_signature = hash_hmac( 'sha256', serialize( $request_source ), dfrcs_get_hash() );
-
-	echo $check_signature;
-	echo '<br>';
-	echo $received_signature;
-	echo '<br>';
+	$check_signature = dfrcs_hash_hmac( serialize( $request_source ) );
 
 	if ( ! hash_equals( $check_signature, $received_signature ) ) {
 		die( 'Invalid signature' );
@@ -1286,9 +1281,13 @@ function dfrcs_refresh_compset_ajax() {
 
 	check_ajax_referer( 'dfrcs_ajax_nonce', 'dfrcs_security' );
 
+	if ( ! dfrcs_can_manage_compset() ) {
+		die( 'Permission denied' );
+	}
+
 	$request = $_REQUEST;
 
-	if ( ! isset( $request['hash'] ) || empty( $request['hash'] ) ) {
+	if ( empty( $request['hash'] ) ) {
 		die();
 	}
 
@@ -1302,6 +1301,14 @@ function dfrcs_refresh_compset_ajax() {
 	// Ensure that $source is an array. Die if not an array.
 	if ( ! is_array( $source ) ) {
 		die();
+	}
+
+	$received_signature = $source['signature'];
+	unset( $source['signature'] );
+	$check_signature = dfrcs_hash_hmac( serialize( $source ) );
+
+	if ( ! hash_equals( $check_signature, $received_signature ) ) {
+		die( 'Invalid signature' );
 	}
 
 	$source['display_method'] = 'ajax';
@@ -1350,6 +1357,10 @@ add_action( 'wp_ajax_dfrcs_remove_product', 'dfrcs_remove_product' );
 function dfrcs_remove_product() {
 
 	check_ajax_referer( 'dfrcs_ajax_nonce', 'dfrcs_security' );
+
+	if ( ! dfrcs_can_manage_compset() ) {
+		die( 'Permission denied' );
+	}
 
 	global $wpdb;
 
@@ -1426,6 +1437,10 @@ add_action( 'wp_ajax_dfrcs_restore_product', 'dfrcs_restore_product' );
 function dfrcs_restore_product() {
 
 	check_ajax_referer( 'dfrcs_ajax_nonce', 'dfrcs_security' );
+
+	if ( ! dfrcs_can_manage_compset() ) {
+		die( 'Permission denied' );
+	}
 
 	global $wpdb;
 
@@ -1504,6 +1519,10 @@ add_action( 'wp_ajax_dfrcs_add_product', 'dfrcs_add_product' );
 function dfrcs_add_product() {
 
 	check_ajax_referer( 'dfrcs_ajax_nonce', 'dfrcs_security' );
+
+	if ( ! dfrcs_can_manage_compset() ) {
+		die( 'Permission denied' );
+	}
 
 	global $wpdb;
 
@@ -1632,9 +1651,12 @@ function dfrcs_ajax_get_products() {
 
 	check_ajax_referer( 'dfrcs_ajax_nonce', 'dfrcs_security' );
 
+	if ( ! dfrcs_can_manage_compset() ) {
+		die( 'Permission denied' );
+	}
+
 	if ( ! isset( $_REQUEST['hash'] ) ) {
-		echo 'no hash';
-		die;
+		die( 'Missing hash' );
 	}
 
 	$hash = $_REQUEST['hash'];
