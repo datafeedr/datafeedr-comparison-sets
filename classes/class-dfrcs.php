@@ -319,6 +319,8 @@ class Dfrcs {
 
 	private function set_encoded_source() {
 		$source               = $this->source->original;
+		$signature            = dfrcs_hash_hmac( serialize( $source ) );
+		$source['signature']  = $signature;
 		$source               = serialize( $source );
 		$source               = base64_encode( $source );
 		$this->encoded_source = $source;
