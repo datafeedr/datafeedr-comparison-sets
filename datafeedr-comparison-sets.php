@@ -10,7 +10,7 @@ License: GPL v3
 Requires PHP: 7.4
 Requires at least: 3.8
 Tested up to: 6.3.3-alpha
-Version: 0.9.67
+Version: 0.9.68
 
 WC requires at least: 3.0
 WC tested up to: 7.9
@@ -42,7 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define constants.
  */
-define( 'DFRCS_VERSION', '0.9.67' );
+define( 'DFRCS_VERSION', '0.9.68' );
 define( 'DFRCS_DB_VERSION', '0.9.0' );
 define( 'DFRCS_URL', plugin_dir_url( __FILE__ ) );
 define( 'DFRCS_PATH', plugin_dir_path( __FILE__ ) );
