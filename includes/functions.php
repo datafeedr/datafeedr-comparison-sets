@@ -1413,3 +1413,32 @@ function dfrcs_use_amazon_data_in_search(): bool {
 function dfrcs_is_valid_md5( string $md5 = '' ): bool {
 	return boolval( preg_match( '/^[a-f0-9]{32}$/', $md5 ) );
 }
+
+/**
+ * Returns the Comparison Sets Hash value to use in signed requests.
+ *
+ * This function will only return a valid MD5 hash. If the value returned
+ * from the database does not exist OR is an invalid MD5 hash, this
+ * function will create and save a new MD5 hash and return the new hash.
+ *
+ * @since 0.9.68
+ *
+ * @return string
+ */
+function dfrcs_get_hash(): string {
+
+	$option = 'dfrcs_hash';
+	$hash = get_option( $option, false );
+
+	if ( dfrcs_is_valid_md5( $hash ) ) {
+		return $hash;
+	}
+
+	$password = wp_generate_password( 64, true, true );
+	$hash     = wp_hash( $password );
+
+	update_option( $option, $hash, false );
+
+	return $hash;
+}
+

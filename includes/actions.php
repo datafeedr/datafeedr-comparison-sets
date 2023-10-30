@@ -1245,6 +1245,19 @@ function dfrcs_output_compset_ajax() {
 		die();
 	}
 
+	$received_signature = $request_source['signature'];
+	unset( $request_source['signature'] );
+	$check_signature = hash_hmac( 'sha256', serialize( $request_source ), dfrcs_get_hash() );
+
+	echo $check_signature;
+	echo '<br>';
+	echo $received_signature;
+	echo '<br>';
+
+	if ( ! hash_equals( $check_signature, $received_signature ) ) {
+		die( 'Invalid signature' );
+	}
+
 	$source = [];
 
 	// Sanitize data returned
