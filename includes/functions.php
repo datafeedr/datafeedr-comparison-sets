@@ -1451,7 +1451,7 @@ function dfrcs_get_hash(): string {
  *
  * @return bool|string
  */
-function dfrcs_hash_hmac( string $data ): bool|string {
+function dfrcs_hash_hmac( string $data ) {
 	$algo = 'sha256';
 	$key  = dfrcs_get_hash();
 
