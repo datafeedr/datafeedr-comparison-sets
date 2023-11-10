@@ -9,11 +9,11 @@ Text Domain: datafeedr-comparison-sets
 License: GPL v3
 Requires PHP: 7.4
 Requires at least: 3.8
-Tested up to: 6.3.3-alpha
-Version: 0.9.69
+Tested up to: 6.4.2-alpha
+Version: 0.9.70
 
 WC requires at least: 3.0
-WC tested up to: 7.9
+WC tested up to: 8.2
 
 Datafeedr Comparison Sets Plugin
 Copyright (C) 2023, Datafeedr - help@datafeedr.com
@@ -42,7 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define constants.
  */
-define( 'DFRCS_VERSION', '0.9.69' );
+define( 'DFRCS_VERSION', '0.9.70' );
 define( 'DFRCS_DB_VERSION', '0.9.0' );
 define( 'DFRCS_URL', plugin_dir_url( __FILE__ ) );
 define( 'DFRCS_PATH', plugin_dir_path( __FILE__ ) );
@@ -81,6 +81,19 @@ if ( is_admin() ) {
  */
 require_once dirname( DFRCS_PLUGIN_FILE ) . '/includes/actions.php';
 require_once dirname( DFRCS_PLUGIN_FILE ) . '/includes/filters.php';
+
+/**
+ * Declaring WooCommerce HPOS compatibility.
+ *
+ * @see https://github.com/woocommerce/woocommerce/wiki/High-Performance-Order-Storage-Upgrade-Recipe-Book
+ *
+ * @since 0.9.70
+ */
+add_action( 'before_woocommerce_init', function () {
+	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+	}
+} );
 
 /**
  * Do initial set up.
