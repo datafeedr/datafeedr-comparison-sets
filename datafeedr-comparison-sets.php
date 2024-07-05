@@ -9,14 +9,14 @@ Text Domain: datafeedr-comparison-sets
 License: GPL v3
 Requires PHP: 7.4
 Requires at least: 3.8
-Tested up to: 6.4.2-alpha
-Version: 0.9.70
+Tested up to: 6.6-RC2
+Version: 0.9.71
 
 WC requires at least: 3.0
-WC tested up to: 8.2
+WC tested up to: 9.0
 
 Datafeedr Comparison Sets Plugin
-Copyright (C) 2023, Datafeedr - help@datafeedr.com
+Copyright (C) 2024, Datafeedr - help@datafeedr.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define constants.
  */
-define( 'DFRCS_VERSION', '0.9.70' );
+define( 'DFRCS_VERSION', '0.9.71' );
 define( 'DFRCS_DB_VERSION', '0.9.0' );
 define( 'DFRCS_URL', plugin_dir_url( __FILE__ ) );
 define( 'DFRCS_PATH', plugin_dir_path( __FILE__ ) );
