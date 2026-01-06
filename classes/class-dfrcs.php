@@ -99,9 +99,9 @@ class Dfrcs {
 	 * If there is a cached version and it's not expired, this will not create a compset.
 	 * Also, if the display method is 'data', this will not create a compset.
 	 *
-	 * @return null This method does not return anything.
 	 * @since 0.9.0
 	 *
+	 * @return null This method does not return anything.
 	 */
 	public function create() {
 
@@ -182,9 +182,9 @@ class Dfrcs {
 	 * This also returns an empty string if the display method is not of an expected type.
 	 * This also returns the value of display_data() if the display_method is 'data'.
 	 *
-	 * @return string $html Returns $html for display.
 	 * @since 0.9.0
 	 *
+	 * @return string $html Returns $html for display.
 	 */
 	public function display() {
 
@@ -703,11 +703,11 @@ class Dfrcs {
 	 * If products are found, products are added to the $this->products property and then the
 	 * method returns true.
 	 *
+	 * @since 0.9.0
+	 *
 	 * @param string $id A unique Datafeedr product ID.
 	 *
 	 * @return boolean true if products are found, false if no query was run or no products were found.
-	 * @since 0.9.0
-	 *
 	 */
 	private function query_by_dfrps_product( $id ) {
 
@@ -754,11 +754,11 @@ class Dfrcs {
 	 * If products are found, products are added to the $this->products property and then the
 	 * method returns true.
 	 *
+	 * @since 0.9.0
+	 *
 	 * @param string $id A unique Datafeedr product ID.
 	 *
 	 * @return boolean true if products are found, false if no query was run or no products were found.
-	 * @since 0.9.0
-	 *
 	 */
 	private function query_by_id( $id ) {
 
@@ -827,11 +827,11 @@ class Dfrcs {
 	 * If products are found, only the first product is added to the $this->products property and then the
 	 * method returns true to prevent any other queries being run.
 	 *
+	 * @since 0.9.0
+	 *
 	 * @param array $fields An array of fields to query the Amazon API on. Default: 'barcodes' and 'name'.
 	 *
 	 * @return boolean true if products are found, false if no query was run or no products were found.
-	 * @since 0.9.0
-	 *
 	 */
 	private function query_amazon() {
 
@@ -849,11 +849,25 @@ class Dfrcs {
 			return;
 		}
 
-		// Check if Amazon API keys exist and return if they do not.
-		if ( ! function_exists( 'dfrapi_get_amazon_keys' ) || ! $amazon = dfrapi_get_amazon_keys() ) {
-			$this->log( 'query_amazon/result', __( 'Halted. No Amazon Keys available.', DFRCS_DOMAIN ) );
+		$amazon_api = dfrapi_get_amazon_api();
 
-			return;
+		if ( $amazon_api === 'capi' ) {
+
+			// Check if Amazon Creators API keys exist.
+			if ( ! dfrapi_capi_credentials_exist() ) {
+				$this->log( 'query_amazon/result', __( 'Halted. No Amazon Creators API keys exist.', DFRCS_DOMAIN ) );
+
+				return;
+			}
+
+		} else {
+			// Check if Amazon API keys exist and return if they do not.
+
+			if ( ! function_exists( 'dfrapi_get_amazon_keys' ) || ! $amazon = dfrapi_get_amazon_keys() ) {
+				$this->log( 'query_amazon/result', __( 'Halted. No Amazon Keys available.', DFRCS_DOMAIN ) );
+
+				return;
+			}
 		}
 
 		if ( empty( $fields ) ) {
@@ -910,28 +924,60 @@ class Dfrcs {
 				return $options;
 			} );
 
-			$locale = ( isset( $this->source->filters['amazon_locale'] ) ) ? $this->source->filters['amazon_locale'] : $amazon['amazon_locale'];
-			$search = $api->amazonSearchRequest( $amazon['amazon_access_key_id'], $amazon['amazon_secret_access_key'],
-				$amazon['amazon_tracking_id'], $locale );
+			if ( $amazon_api === 'capi' ) {
 
+				$credentials = dfrapi_get_capi_credentials();
+				$locale      = ( isset( $this->source->filters['amazon_locale'] ) ) ? $this->source->filters['amazon_locale'] : $credentials['marketplace'];
 
-			$search->addParam( 'Keywords', $param );
+				$search = $api->amazonCreatorApiSearchRequest( strtoupper( $locale ) );
+
+				$search->addParam( 'keywords', $param );
+
+			} else {
+
+				$locale = ( isset( $this->source->filters['amazon_locale'] ) ) ? $this->source->filters['amazon_locale'] : $amazon['amazon_locale'];
+
+				$search = $api->amazonSearchRequest(
+					$amazon['amazon_access_key_id'],
+					$amazon['amazon_secret_access_key'],
+					$amazon['amazon_tracking_id'],
+					$locale
+				);
+
+				$search->addParam( 'Keywords', $param );
+			}
 
 			$this->log( 'query_amazon_by_' . $field . '/api_request/locale', $locale );
 			$this->log( 'query_amazon_by_' . $field . '/api_request/keyword', $param );
 
 			// Add MinimumPrice filter.
 			if ( isset( $this->source->filters['finalprice_min'] ) ) {
-				$search->addParam( 'MinimumPrice', $this->source->filters['finalprice_min'] );
-				$this->log( 'query_amazon_by_' . $field . '/api_request/finalprice_min',
-					$this->source->filters['finalprice_min'] );
+
+				if ( $amazon_api === 'capi' ) {
+					$search->addParam( 'minPrice', dfrapi_price_to_int( $this->source->filters['finalprice_min'] ) );
+				} else {
+					$search->addParam( 'MinimumPrice', $this->source->filters['finalprice_min'] );
+				}
+
+				$this->log(
+					'query_amazon_by_' . $field . '/api_request/finalprice_min',
+					$this->source->filters['finalprice_min']
+				);
 			}
 
 			// Add MaximumPrice filter.
 			if ( isset( $this->source->filters['finalprice_max'] ) ) {
-				$search->addParam( 'MaximumPrice', $this->source->filters['finalprice_max'] );
-				$this->log( 'query_amazon_by_' . $field . '/api_request/finalprice_max',
-					$this->source->filters['finalprice_max'] );
+
+				if ( $amazon_api === 'capi' ) {
+					$search->addParam( 'maxPrice', dfrapi_price_to_int( $this->source->filters['finalprice_max'] ) );
+				} else {
+					$search->addParam( 'MaximumPrice', $this->source->filters['finalprice_max'] );
+				}
+
+				$this->log(
+					'query_amazon_by_' . $field . '/api_request/finalprice_max',
+					$this->source->filters['finalprice_max']
+				);
 			}
 
 			try {
@@ -990,11 +1036,11 @@ class Dfrcs {
 	 * If products are found, products are added to the $this->products property and then the
 	 * method returns true.
 	 *
+	 * @since 0.9.0
+	 *
 	 * @param array $barcodes An array of unique codes like EAN, UPC, ISBN or ASIN values.
 	 *
 	 * @return boolean true if products are found, false if no query was run or no products were found.
-	 * @since 0.9.0
-	 *
 	 */
 	private function query_by_barcodes() {
 
@@ -1072,11 +1118,11 @@ class Dfrcs {
 	 * If products are found, products are added to the $this->products property and then the
 	 * method returns true.
 	 *
+	 * @since 0.9.0
+	 *
 	 * @param array $model An array of possible model numbers.
 	 *
 	 * @return boolean true if products are found, false if no query was run or no products were found.
-	 * @since 0.9.0
-	 *
 	 */
 	private function query_by_model() {
 
@@ -1396,11 +1442,11 @@ class Dfrcs {
 	/**
 	 * Returns the 13 character EAN value from barcodes array.
 	 *
+	 * @since 0.9.0
+	 *
 	 * @param array $barcodes An array of unique codes such as EAN, UPC, ASIN and ISBN.
 	 *
 	 * @return string The first 13 character long code from $barcodes.
-	 * @since 0.9.0
-	 *
 	 */
 	private function get_ean13( $barcodes ) {
 		if ( is_array( $barcodes ) && ! empty( $barcodes ) ) {
