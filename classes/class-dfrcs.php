@@ -849,7 +849,11 @@ class Dfrcs {
 			return;
 		}
 
-		$amazon_api = dfrapi_get_amazon_api();
+		if ( function_exists( 'dfrapi_get_amazon_api' ) ) {
+			$amazon_api = dfrapi_get_amazon_api();
+		} else {
+			$amazon_api = 'paapi';
+		}
 
 		if ( $amazon_api === 'capi' ) {
 
